@@ -22,32 +22,34 @@ def get_download_links():
     response.raise_for_status()
 
     soup = BeautifulSoup(response.text, "html.parser")
-    links = []
+    links = {}
 
     # Procura links para arquivos CSV e Parquet
     for link in soup.find_all("a", href=True):
         href = link["href"]
         if "tripdata" in href and (href.endswith(".parquet") or href.endswith(".csv")):
             full_url = href if href.startswith("http") else f"https://www.nyc.gov{href}"
-            links.append(full_url)
 
-    print(f"✅ {len(links)} links encontrados!")
+            # Extrai o ano e o mês do nome do arquivo
+            filename = href.split("/")[-1]
+            year, month = extract_year_month(filename)
+
+            if year and month:
+                links[f"{year}-{month}"] = full_url
+
+    print(f"✅ {len(links)} datasets encontrados!")
     return links
 
 # Função para extrair o ano e o mês do nome do arquivo
 def extract_year_month(filename):
     match = re.search(r"(\d{4})-(\d{2})", filename)
     if match:
-        year, month = match.groups()
-        return year, month
-    return "unknown", "unknown"
+        return match.groups()
+    return None, None
 
 # Função para baixar e enviar o arquivo direto para o S3
-def download_and_upload_to_s3(url):
+def download_and_upload_to_s3(url, year, month):
     filename = url.split("/")[-1]
-    year, month = extract_year_month(filename)
-
-    # Define o caminho no S3
     s3_key = f"{S3_PREFIX}/{year}/{month}/{filename}"
 
     # Verifica se o arquivo já existe no S3
@@ -60,33 +62,38 @@ def download_and_upload_to_s3(url):
 
     print(f"⬇ Baixando {filename}...")
 
-    response = requests.get(url, stream=True)
+    response = requests.get(url, stream=True, timeout=60)
     response.raise_for_status()
 
-    total_size = int(response.headers.get("content-length", 0))
-    progress_bar = tqdm(total=total_size, unit="B", unit_scale=True, unit_divisor=1024, desc=filename)
-
-    # Salva os dados diretamente na memória (sem armazenar no disco)
-    file_data = BytesIO()
-    for chunk in response.iter_content(chunk_size=1024):
-        file_data.write(chunk)
-        progress_bar.update(len(chunk))
-    progress_bar.close()
-
-    file_data.seek(0)  # Volta para o início do arquivo
-
     print(f"🚀 Enviando {filename} para s3://{S3_BUCKET}/{s3_key}...")
-    s3.upload_fileobj(file_data, S3_BUCKET, s3_key)
+    s3.upload_fileobj(response.raw, S3_BUCKET, s3_key)
     print(f"✅ Upload concluído: s3://{S3_BUCKET}/{s3_key}")
 
-# Baixa e envia os arquivos para o S3
-def main():
-    links = get_download_links()
-    for link in links:
-        try:
-            download_and_upload_to_s3(link)
-        except Exception as e:
-            print(f"❌ Erro ao processar {link}: {e}")
+# Função principal que pode receber ano e mês como parâmetro
+def main(years=["2023", "2024"], month=None):
+    print(f"📅 Buscando datasets para {years} e mês: {month if month else 'todos'}...")
+    
+    all_links = get_download_links()
 
+    for year in years:
+        for m in range(1, 13):
+            month_str = f"{m:02d}"
+            dataset_key = f"{year}-{month_str}"
+
+            # Se um mês específico foi passado, filtra apenas ele
+            if month and month_str != month:
+                continue
+
+            if dataset_key in all_links:
+                try:
+                    download_and_upload_to_s3(all_links[dataset_key], year, month_str)
+                except Exception as e:
+                    print(f"❌ Erro ao processar {dataset_key}: {e}")
+            else:
+                print(f"⚠ Nenhum dataset encontrado para {dataset_key}.")
+
+    print("✅ Processamento concluído!")
+
+# Executar diretamente
 if __name__ == "__main__":
-    main()
+    main()  # Executa com os anos padrão 2023 e 2024
