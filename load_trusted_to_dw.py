@@ -1,6 +1,8 @@
 import os
+import boto3
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, sum, avg, count, year, month
+from pyspark.sql.functions import col, when, trim, current_timestamp, lower, lit
+from pyspark.sql.types import IntegerType, FloatType, StringType, TimestampType
 
 # Definir caminho correto para os JARs no Cloud9
 home_dir = os.environ["HOME"]
@@ -8,52 +10,39 @@ jars_path = f"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/a
 
 # Criar sessão Spark com suporte ao S3 no Cloud9
 spark = SparkSession.builder \
-    .appName("NYC Taxi Data Warehouse") \
+    .appName("NYC Taxi Data Processing") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
     .config("spark.jars", jars_path) \
     .getOrCreate()
 
-print("✅ Sessão Spark iniciada!")
+# 🚀 Ativar configuração para evitar `_temporary/`
+spark.conf.set("spark.sql.sources.commitProtocolClass", "org.apache.spark.sql.execution.datasources.SQLHadoopMapReduceCommitProtocol")
 
-# Caminhos S3
-trusted_path = "s3a://mba-nyc-dataset/trusted/all_taxi_trips.parquet"
-gold_path = "s3a://mba-nyc-dataset/dw/gold"
 
-# 🚀 Ler a camada trusted consolidada
-print(f"📥 Lendo dados da camada trusted: {trusted_path}")
+# Definir os caminhos no S3
+trusted_path = "s3a://mba-nyc-dataset/trusted/all_taxi_trips/"
+dw_path = "s3a://mba-nyc-dataset/dw/"
+
+# Ler os dados da camada Trusted (Parquet)
 df = spark.read.parquet(trusted_path)
 
-# 🚀 Criar colunas de ano e mês para agregações
-df = df.withColumn("year", year(col("processing_timestamp"))) \
-       .withColumn("month", month(col("processing_timestamp")))
+# Verificar se há dados antes de prosseguir
+if df.isEmpty():
+    print("Nenhum dado encontrado na camada Trusted. Processo encerrado.")
+else:
+    # Remover duplicatas e valores nulos
+    df_transformed = df.dropDuplicates().dropna()
 
-# 🔹 1. Criar a tabela `gold_kpis` com estatísticas gerais
-gold_kpis = df.groupBy("year", "month", "taxi_type") \
-    .agg(
-        count("*").alias("total_viagens"),
-        avg("trip_distance").alias("media_distancia_km"),
-        avg("passenger_count").alias("media_passageiros"),
-        sum("total_amount").alias("faturamento_total")
-    )
+    # Opcional: Converter colunas para tipos apropriados (ajuste conforme necessário)
+    df_transformed = df_transformed.withColumn("trip_distance", col("trip_distance").cast("double")) \
+                                   .withColumn("fare_amount", col("fare_amount").cast("double")) \
+                                   .withColumn("passenger_count", col("passenger_count").cast("int"))
 
-print("🚀 Salvando KPIs em `gold_kpis`")
-gold_kpis.write.mode("overwrite").parquet(f"{gold_path}/gold_kpis.parquet")
+    # Gravar os dados na camada DW (Gold)
+    df_transformed.write.mode("overwrite").parquet(dw_path)
 
-# 🔹 2. Criar a tabela `gold_faturamento_mensal` para análise de receita
-gold_faturamento = df.groupBy("year", "month", "taxi_type") \
-    .agg(sum("total_amount").alias("faturamento_total"))
+    print("Processo concluído. Dados movidos para a camada DW com sucesso.")
 
-print("🚀 Salvando Faturamento Mensal em `gold_faturamento_mensal`")
-gold_faturamento.write.mode("overwrite").parquet(f"{gold_path}/gold_faturamento_mensal.parquet")
-
-# 🔹 3. Criar a tabela `gold_pickup_hotspots` com os locais mais populares para pickup
-if "PULocationID" in df.columns:
-    gold_pickup_hotspots = df.groupBy("year", "month", "PULocationID") \
-        .agg(count("*").alias("total_viagens")) \
-        .orderBy(col("total_viagens").desc())
-
-    print("🚀 Salvando Hotspots de Pickup em `gold_pickup_hotspots`")
-    gold_pickup_hotspots.write.mode("overwrite").parquet(f"{gold_path}/gold_pickup_hotspots.parquet")
-
-print("🎉 Camada `dw/gold` criada com sucesso!")
+# Encerrar a sessão Spark
+spark.stop()
