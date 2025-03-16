@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import boto3
 from tqdm import tqdm
 from io import BytesIO
+import re
 
 # Configurações do S3
 S3_BUCKET = "mba-nyc-dataset"
@@ -33,10 +34,21 @@ def get_download_links():
     print(f"✅ {len(links)} links encontrados!")
     return links
 
+# Função para extrair o ano e o mês do nome do arquivo
+def extract_year_month(filename):
+    match = re.search(r"(\d{4})-(\d{2})", filename)
+    if match:
+        year, month = match.groups()
+        return year, month
+    return "unknown", "unknown"
+
 # Função para baixar e enviar o arquivo direto para o S3
 def download_and_upload_to_s3(url):
     filename = url.split("/")[-1]
-    s3_key = f"{S3_PREFIX}/{filename}"
+    year, month = extract_year_month(filename)
+
+    # Define o caminho no S3
+    s3_key = f"{S3_PREFIX}/{year}/{month}/{filename}"
 
     # Verifica se o arquivo já existe no S3
     try:
