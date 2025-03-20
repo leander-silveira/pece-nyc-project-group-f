@@ -2,7 +2,8 @@
 `aws ec2 create-key-pair --key-name ChaveEC2 --query 'KeyMaterial' --output text > ChaveEC2.pem`
 <img width="550" alt="image" src="https://github.com/user-attachments/assets/823bd89c-07ca-4671-b3c6-8b4e8a007db1" />
 
-
+Pegar valor da chave:
+`cat ChaveEC2.pem`
 2. Escolher a Imagem (AMI) e o Tipo de Instância
 `aws ec2 describe-images --owners amazon --filters "Name=name,Values=amzn2-ami-hvm-*" --query 'Images[*].[ImageId, Name]' --output table`
 
@@ -65,5 +66,10 @@ INSTANCE_ID=$(aws ec2 run-instances \
 <img width="288" alt="image" src="https://github.com/user-attachments/assets/9a3b6b04-734f-474b-bf80-2698ebadc403" />
 
 
+Chave usada pra criar instância EC2
+
+`aws ec2 describe-instances --instance-ids i-08741825f813f9b01 --query 'Reservations[0].Instances[0].KeyName' --region us-east-1`
+
+<img width="855" alt="image" src="https://github.com/user-attachments/assets/b5df29a8-993e-4cc5-b3aa-5657a44c76f6" />
 
 
