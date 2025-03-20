@@ -4,23 +4,18 @@ import boto3
 from tqdm import tqdm
 from io import BytesIO
 import re
-import time  # Para retries
+import time
 import json
 
-# Configurações do S3
 S3_BUCKET = "mba-nyc-dataset"
 S3_PREFIX = "raw"
 
-# URL da página de datasets
 BASE_URL = "https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page"
 
-# Inicializa cliente S3
 s3 = boto3.client("s3")
 
-# Tipos de datasets disponíveis
 TAXI_TYPES = ["yellow", "green", "fhv", "hvfhv"]
 
-# Lista de arquivos que falharam no processamento
 failed_uploads = []
 
 def get_download_links():
@@ -84,7 +79,7 @@ def download_and_upload_to_s3(url, taxi_type, year, filename):
         print(f"❌ Erro ao processar {filename}: {e}")
         failed_uploads.append({"taxi_type": taxi_type, "year": year, "filename": filename, "error": str(e)})
 
-def main(years=["2023", "2024"], month=None):
+def main(years=["2022", "2023", "2024"], month=None):
     print(f"📅 Buscando datasets para {years} e mês: {month if month else 'todos'}...")
     all_links = get_download_links()
     
