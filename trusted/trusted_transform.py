@@ -2,6 +2,13 @@ from datetime import datetime
 import boto3
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, lit, concat_ws
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+logger.info("Script trusted_transform iniciado com sucesso.")
+
+print("Script iniciado")
 
 # Inicializa Spark no EMR
 spark = SparkSession.builder \
