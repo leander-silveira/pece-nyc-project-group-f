@@ -39,14 +39,14 @@ aws emr create-cluster \
 
 
 Criar um step manualmente
-Opção 1:
+Tentativa 1:
 ```
 aws emr add-steps \
   --cluster-id j-1QE4KP239A1VO \
   --steps Type=Spark,Name="Trusted Transform",ActionOnFailure=CONTINUE,Args=[--deploy-mode,cluster,--master,yarn,s3://mba-nyc-dataset/emr/scripts/trusted_transform.py] \
   --region us-east-1
 ```
-Opção 2:
+Tentativa 2:
 ```
 aws emr add-steps \
   --cluster-id j-3J5BXW4H7BLGY \
@@ -56,6 +56,15 @@ aws emr add-steps \
     "ActionOnFailure":"CONTINUE",
     "Args":["spark-submit","--deploy-mode","cluster","--master","yarn","--conf","spark.pyspark.python=python3","s3://mba-nyc-dataset/emr/scripts/trusted_transform.py"]
   }]' \
+  --region us-east-1
+```
+
+Tentativa 3:
+
+```
+aws emr add-steps \
+  --cluster-id j-3J5BXW4H7BLGY \
+  --steps Type=Spark,Name="NYC Trusted Transform",ActionOnFailure=CONTINUE,Args=["--deploy-mode","cluster","--master","yarn","--conf","spark.pyspark.python=python3","s3://mba-nyc-dataset/emr/scripts/trusted_transform.py"] \
   --region us-east-1
 ```
 
