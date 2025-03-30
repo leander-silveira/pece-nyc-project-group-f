@@ -44,10 +44,12 @@ aws emr create-cluster \
 
 Criar um step manualmente
 
+```
 aws emr add-steps \
   --cluster-id j-1QE4KP239A1VO \
   --steps Type=Spark,Name="Trusted Transform",ActionOnFailure=CONTINUE,Args=[--deploy-mode,cluster,--master,yarn,s3://mba-nyc-dataset/emr/scripts/trusted_transform.py] \
   --region us-east-1
+```
 
-
+![image](https://github.com/user-attachments/assets/93109078-f82f-4ea3-bf2d-103ed3d8fa48)
 
