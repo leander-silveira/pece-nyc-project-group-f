@@ -15,6 +15,7 @@ Pegar chave:
 ```cat emr-keypair.pem```
 
 
+![image](https://github.com/user-attachments/assets/7c6c790d-9ffc-452d-b376-e9adfcd31af4)
 
 Cria EMR:
 
@@ -31,16 +32,14 @@ aws emr create-cluster \
   --steps Type=Spark,Name="Trusted Transform",ActionOnFailure=CONTINUE,Args=[--deploy-mode,cluster,--master,yarn,s3://mba-nyc-dataset/emr/scripts/trusted_transform.py] \
   --region us-east-1
  ```
-{
-    "ClusterId": "j-27UZJUZTRD7TF",
-    "ClusterArn": "arn:aws:elasticmapreduce:us-east-1:178179121271:cluster/j-27UZJUZTRD7TF"
-}
+![image](https://github.com/user-attachments/assets/ceeb0427-f4f5-4d46-9e22-aafd26affde1)
 
-![image](https://github.com/user-attachments/assets/ac38642f-7c0f-4ed9-b301-53be9b3283ea)
 
-![image](https://github.com/user-attachments/assets/907f555a-3fb4-450e-9b5b-1f27e95afb1b)
+![image](https://github.com/user-attachments/assets/75dcbb36-7b2f-4bd6-8896-6bc704bed207)
 
-![image](https://github.com/user-attachments/assets/7c6c790d-9ffc-452d-b376-e9adfcd31af4)
+
+
+
 
 
 Criar um step manualmente
