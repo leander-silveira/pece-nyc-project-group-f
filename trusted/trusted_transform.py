@@ -1,5 +1,5 @@
 from datetime import datetime
-import boto3
+import time
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, lit, concat_ws
 
@@ -17,32 +17,82 @@ TAXI_TYPES = {
     'fhvhv_tripdata': 'highVolumeForHire',
 }
 
-# Função para aplicar validações de limpeza
+# Função para aplicar regras de limpeza
 def apply_cleaning_rules(df, taxi_type):
-    df = df.withColumn("taxi_type", lit(taxi_type))
-    df = df.withColumn("trip_distance", when(col("trip_distance").isNull(), 0).otherwise(col("trip_distance")))
-    df = df.withColumn("passenger_count", when(col("passenger_count").isNull(), 0).otherwise(col("passenger_count")))
+    print(f"Aplicando regras de limpeza para tipo: {taxi_type}")
+    df = df.withColumn("has_problem", lit(False))
+    df = df.withColumn("problem_description", lit(""))
+
+    if taxi_type in ['yellowTaxi', 'greenTaxi']:
+        pickup_col = 'tpep_pickup_datetime' if taxi_type == 'yellowTaxi' else 'lpep_pickup_datetime'
+        dropoff_col = 'tpep_dropoff_datetime' if taxi_type == 'yellowTaxi' else 'lpep_dropoff_datetime'
+
+        df = df.withColumn("has_problem", when(col("passenger_count") <= 0, True).otherwise(col("has_problem")))
+        df = df.withColumn("problem_description", when(col("passenger_count") <= 0, concat_ws(";", col("problem_description"), lit("passenger_count <= 0"))).otherwise(col("problem_description")))
+
+        df = df.withColumn("has_problem", when(col("trip_distance") <= 0, True).otherwise(col("has_problem")))
+        df = df.withColumn("problem_description", when(col("trip_distance") <= 0, concat_ws(";", col("problem_description"), lit("trip_distance <= 0"))).otherwise(col("problem_description")))
+
+        df = df.withColumn("has_problem", when(col(dropoff_col) <= col(pickup_col), True).otherwise(col("has_problem")))
+        df = df.withColumn("problem_description", when(col(dropoff_col) <= col(pickup_col), concat_ws(";", col("problem_description"), lit("dropoff <= pickup"))).otherwise(col("problem_description")))
+
+    elif taxi_type == 'forHireVehicle':
+        df = df.withColumn("has_problem", when(col("PUlocationID").isNull() & col("DOlocationID").isNull(), True).otherwise(col("has_problem")))
+        df = df.withColumn("problem_description", when(col("PUlocationID").isNull() & col("DOlocationID").isNull(), concat_ws(";", col("problem_description"), lit("PU and DO missing"))).otherwise(col("problem_description")))
+
+    elif taxi_type == 'highVolumeForHire':
+        df = df.withColumn("has_problem", when(col("trip_miles") <= 0, True).otherwise(col("has_problem")))
+        df = df.withColumn("problem_description", when(col("trip_miles") <= 0, concat_ws(";", col("problem_description"), lit("trip_miles <= 0"))).otherwise(col("problem_description")))
+
+        df = df.withColumn("has_problem", when(col("trip_time") <= 0, True).otherwise(col("has_problem")))
+        df = df.withColumn("problem_description", when(col("trip_time") <= 0, concat_ws(";", col("problem_description"), lit("trip_time <= 0"))).otherwise(col("problem_description")))
+
+        df = df.withColumn("has_problem", when(col("dropoff_datetime") <= col("pickup_datetime"), True).otherwise(col("has_problem")))
+        df = df.withColumn("problem_description", when(col("dropoff_datetime") <= col("pickup_datetime"), concat_ws(";", col("problem_description"), lit("dropoff <= pickup"))).otherwise(col("problem_description")))
+
     return df
 
-# Função principal de processamento
-def process_taxi_data():
-    input_bucket = "s3://mba-nyc-dataset/raw/"
-    output_bucket = "s3://mba-nyc-dataset/trusted/"
+# Função principal de transformação
+def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
+    filename = f"{taxi_type_filename}_{year}-{month}.parquet"
+    path_filename = f"{taxi_type_folder}/{year}/{filename}"
+    bucket = "mba-nyc-dataset"
+    source_key = f"raw/{path_filename}"
+    destination_key = f"trusted/{path_filename}"
 
-    for year in range(2022, 2025):  # Anos de 2022 até 2024
-        for month in range(1, 13):
-            for prefix, taxi_type in TAXI_TYPES.items():
-                file_key = f"{prefix}/{prefix}_{year}-{month:02d}.parquet"
-                input_path = input_bucket + file_key
-                output_path = output_bucket + file_key
+    print(f"Iniciando processamento do arquivo: {filename}")
+    try:
+        start_time = time.time()
 
-                try:
-                    df = spark.read.parquet(input_path)
-                    cleaned_df = apply_cleaning_rules(df, taxi_type)
-                    cleaned_df.write.mode("overwrite").parquet(output_path)
-                    print(f"[SUCESSO] {file_key}")
-                except Exception as e:
-                    print(f"[ERRO] Falha ao processar {file_key}: {e}")
+        df = spark.read.parquet(f"s3://{bucket}/{source_key}").cache()
+        total_rows = df.count()
+        print(f"Arquivo carregado com sucesso: {filename} | Total de linhas: {total_rows}")
 
-if __name__ == "__main__":
-    process_taxi_data()
+        df_cleaned = apply_cleaning_rules(df, taxi_type_folder)
+
+        df_cleaned \
+            .repartition(4) \
+            .write \
+            .mode("overwrite") \
+            .parquet(f"s3://{bucket}/{destination_key}")
+
+        print(f"✅ Arquivo salvo com sucesso em: trusted/{path_filename}")
+        print(f"Tempo de execução: {round(time.time() - start_time, 2)} segundos")
+
+    except Exception as e:
+        print(f"❌ Falha ao processar o arquivo {filename}: {str(e)}")
+
+# Execução principal
+months = [f"{m:02d}" for m in range(1, 13)]
+years = [2022, 2023, 2024]
+
+for year in years:
+    for month in months:
+        for taxi_type_filename, taxi_type_folder in TAXI_TYPES.items():
+            print(f"\n>>> Processando: {taxi_type_filename} | Ano: {year} | Mês: {month}")
+            trusted_transform(
+                month=month,
+                year=year,
+                taxi_type_folder=taxi_type_folder,
+                taxi_type_filename=taxi_type_filename
+            )
