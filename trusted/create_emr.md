@@ -33,12 +33,14 @@ aws emr create-cluster \
  --region "us-east-1"
  ```
 
+"ClusterId": "j-1QE4KP239A1VO",
 
-![image](https://github.com/user-attachments/assets/2b2b7229-cec8-4ad8-8bba-1b4346404366)
+![image](https://github.com/user-attachments/assets/ac38642f-7c0f-4ed9-b301-53be9b3283ea)
 
-![image](https://github.com/user-attachments/assets/69b88428-a57c-47ce-a352-ff816deabfcb)
+![image](https://github.com/user-attachments/assets/907f555a-3fb4-450e-9b5b-1f27e95afb1b)
 
-![image](https://github.com/user-attachments/assets/775fe085-1c51-4f67-9cdb-faf11e738909)
+![image](https://github.com/user-attachments/assets/7c6c790d-9ffc-452d-b376-e9adfcd31af4)
+
 
 
 
