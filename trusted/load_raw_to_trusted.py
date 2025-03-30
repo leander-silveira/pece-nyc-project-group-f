@@ -1,10 +1,11 @@
 import os
+import time
 import boto3
 from datetime import datetime
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, lit, concat_ws
 
-# Definir caminho correto para os JARs no Cloud9
+# Caminho para JARs no Cloud9
 home_dir = os.environ["HOME"]
 jars_path = f"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar"
 
@@ -70,16 +71,28 @@ def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
 
     print(f"Iniciando processamento do arquivo: {filename}")
     try:
-        df = spark.read.parquet(f"s3a://{bucket}/{source_key}")
-        print(f"Arquivo carregado com sucesso: {filename} | Total de linhas: {df.count()}")
+        start_time = time.time()
+
+        df = spark.read.parquet(f"s3a://{bucket}/{source_key}").cache()
+        total_rows = df.count()
+        print(f"Arquivo carregado com sucesso: {filename} | Total de linhas: {total_rows}")
+
         df_cleaned = apply_cleaning_rules(df, taxi_type_folder)
-        df_cleaned.write.mode("overwrite").parquet(f"s3a://{bucket}/{destination_key}")
+
+        df_cleaned \
+            .repartition(4) \
+            .write \
+            .mode("overwrite") \
+            .parquet(f"s3a://{bucket}/{destination_key}")
+
         print(f"✅ Arquivo salvo com sucesso em: trusted/{path_filename}")
+        print(f"Tempo de execução: {round(time.time() - start_time, 2)} segundos")
+
     except Exception as e:
         print(f"❌ Falha ao processar o arquivo {filename}: {str(e)}")
 
 # Loop principal (anos fixos de 2022 a 2024)
-months = ['0' + str(m) if m < 10 else str(m) for m in range(1, 13)]
+months = [f"{m:02d}" for m in range(1, 13)]
 years = [2022, 2023, 2024]
 
 for year in years:
