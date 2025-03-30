@@ -1,12 +1,22 @@
+import os
 import boto3
-import datetime
+from datetime import datetime
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import *
-from pyspark.sql.types import *
+from pyspark.sql.functions import col, when, trim, current_timestamp, lower, lit
+from pyspark.sql.types import IntegerType, FloatType, StringType, TimestampType
+
+# Definir caminho correto para os JARs no Cloud9
+home_dir = os.environ["HOME"]
+jars_path = f"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar"
 
 # Inicializa Spark
-spark = SparkSession.builder.appName("NYC Taxi Trusted Transform").getOrCreate()
-
+spark = SparkSession.builder \
+    .appName("NYC Taxi Data Processing") \
+    .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
+    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
+    .config("spark.jars", jars_path) \
+    .getOrCreate()
+    
 # Mapeamento dos tipos de táxi
 TAXI_TYPES = {
     'fhv_tripdata': 'forHireVehicle',
@@ -60,7 +70,7 @@ def apply_cleaning_rules(df, taxi_type):
 def trusted_transform(s3, month, year, taxi_type_folder, taxi_type_filename):
     filename = f"{taxi_type_filename}_{year}-{month}.parquet"
     path_filename = f"{taxi_type_folder}/{year}/{filename}"
-    bucket = "mba-nyc-dataset-f"
+    bucket = "mba-nyc-dataset"
     source_key = f"raw/{path_filename}"
     destination_key = f"trusted/{path_filename}"
 
@@ -76,7 +86,7 @@ def trusted_transform(s3, month, year, taxi_type_folder, taxi_type_filename):
 # Execução do loop principal
 
 s3 = boto3.client("s3")
-today = datetime.datetime.now()
+today = datetime.now()
 today_year = today.year
 months = ['0' + str(m) if m < 10 else str(m) for m in range(1, 13)]
 years = list(range(2022, today_year + 1))
