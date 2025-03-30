@@ -17,20 +17,7 @@ Pegar chave:
 
 
 Cria EMR:
-```
-aws emr create-cluster \
-  --name "EMR Trusted Layer Transform" \
-  --release-label emr-6.10.0 \
-  --applications Name=Spark \
-  --ec2-attributes KeyName=emr-keypair \
-  --instance-type m5.xlarge \
-  --instance-count 3 \
-  --use-default-roles \
-  --log-uri s3://mba-nyc-dataset/emr/logs/ \
-  --steps Type=Spark,Name="Trusted Transform",ActionOnFailure=CONTINUE,Args=[--deploy-mode,cluster,--master,yarn,s3://mba-nyc-dataset/scripts/trusted_transform.py] \
-  --auto-terminate \
-  --region us-east-1
-```
+
 ```
 aws emr create-cluster \
  --name "EMR Trusted Layer Transform" \
@@ -46,9 +33,10 @@ aws emr create-cluster \
  --region "us-east-1"
  ```
 
-![image](https://github.com/user-attachments/assets/69b88428-a57c-47ce-a352-ff816deabfcb)
 
 ![image](https://github.com/user-attachments/assets/2b2b7229-cec8-4ad8-8bba-1b4346404366)
+
+![image](https://github.com/user-attachments/assets/69b88428-a57c-47ce-a352-ff816deabfcb)
 
 ![image](https://github.com/user-attachments/assets/775fe085-1c51-4f67-9cdb-faf11e738909)
 
