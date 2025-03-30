@@ -2,8 +2,7 @@ import os
 import boto3
 from datetime import datetime
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, when, trim, current_timestamp, lower, lit
-from pyspark.sql.types import IntegerType, FloatType, StringType, TimestampType
+from pyspark.sql.functions import col, when, lit, concat_ws
 
 # Definir caminho correto para os JARs no Cloud9
 home_dir = os.environ["HOME"]
@@ -11,12 +10,13 @@ jars_path = f"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/a
 
 # Inicializa Spark
 spark = SparkSession.builder \
-    .appName("NYC Taxi Data Processing") \
+    .appName("NYC Taxi Trusted Transform") \
     .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
     .config("spark.jars", jars_path) \
+    .config("spark.sql.debug.maxToStringFields", "100") \
     .getOrCreate()
-    
+
 # Mapeamento dos tipos de táxi
 TAXI_TYPES = {
     'fhv_tripdata': 'forHireVehicle',
@@ -28,11 +28,13 @@ TAXI_TYPES = {
 # Cria função para aplicar validações
 
 def apply_cleaning_rules(df, taxi_type):
-    problems = []
+    print(f"Aplicando regras de limpeza para tipo: {taxi_type}")
+    df = df.withColumn("has_problem", lit(False))
+    df = df.withColumn("problem_description", lit(""))
 
     if taxi_type in ['yellowTaxi', 'greenTaxi']:
-        df = df.withColumn("has_problem", lit(False))
-        df = df.withColumn("problem_description", lit(""))
+        pickup_col = 'tpep_pickup_datetime' if taxi_type == 'yellowTaxi' else 'lpep_pickup_datetime'
+        dropoff_col = 'tpep_dropoff_datetime' if taxi_type == 'yellowTaxi' else 'lpep_dropoff_datetime'
 
         df = df.withColumn("has_problem", when(col("passenger_count") <= 0, True).otherwise(col("has_problem")))
         df = df.withColumn("problem_description", when(col("passenger_count") <= 0, concat_ws(";", col("problem_description"), lit("passenger_count <= 0"))).otherwise(col("problem_description")))
@@ -40,20 +42,14 @@ def apply_cleaning_rules(df, taxi_type):
         df = df.withColumn("has_problem", when(col("trip_distance") <= 0, True).otherwise(col("has_problem")))
         df = df.withColumn("problem_description", when(col("trip_distance") <= 0, concat_ws(";", col("problem_description"), lit("trip_distance <= 0"))).otherwise(col("problem_description")))
 
-        df = df.withColumn("has_problem", when(col("tpep_dropoff_datetime") <= col("tpep_pickup_datetime"), True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("tpep_dropoff_datetime") <= col("tpep_pickup_datetime"), concat_ws(";", col("problem_description"), lit("dropoff <= pickup"))).otherwise(col("problem_description")))
+        df = df.withColumn("has_problem", when(col(dropoff_col) <= col(pickup_col), True).otherwise(col("has_problem")))
+        df = df.withColumn("problem_description", when(col(dropoff_col) <= col(pickup_col), concat_ws(";", col("problem_description"), lit("dropoff <= pickup"))).otherwise(col("problem_description")))
 
     elif taxi_type == 'forHireVehicle':
-        df = df.withColumn("has_problem", lit(False))
-        df = df.withColumn("problem_description", lit(""))
-
         df = df.withColumn("has_problem", when(col("PUlocationID").isNull() & col("DOlocationID").isNull(), True).otherwise(col("has_problem")))
         df = df.withColumn("problem_description", when(col("PUlocationID").isNull() & col("DOlocationID").isNull(), concat_ws(";", col("problem_description"), lit("PU and DO missing"))).otherwise(col("problem_description")))
 
     elif taxi_type == 'highVolumeForHire':
-        df = df.withColumn("has_problem", lit(False))
-        df = df.withColumn("problem_description", lit(""))
-
         df = df.withColumn("has_problem", when(col("trip_miles") <= 0, True).otherwise(col("has_problem")))
         df = df.withColumn("problem_description", when(col("trip_miles") <= 0, concat_ws(";", col("problem_description"), lit("trip_miles <= 0"))).otherwise(col("problem_description")))
 
@@ -74,14 +70,15 @@ def trusted_transform(s3, month, year, taxi_type_folder, taxi_type_filename):
     source_key = f"raw/{path_filename}"
     destination_key = f"trusted/{path_filename}"
 
-    # Lê arquivo do S3
+    print(f"Iniciando processamento do arquivo: {filename}")
     try:
         df = spark.read.parquet(f"s3a://{bucket}/{source_key}")
+        print(f"Arquivo carregado com sucesso: {filename}, linhas: {df.count()}")
         df_cleaned = apply_cleaning_rules(df, taxi_type_folder)
         df_cleaned.write.mode("overwrite").parquet(f"s3a://{bucket}/{destination_key}")
-        print(f"Arquivo {filename} processado com sucesso e salvo na pasta trusted/{taxi_type_folder}")
+        print(f"Arquivo {filename} processado com sucesso e salvo em: trusted/{path_filename}\n")
     except Exception as e:
-        print(f"Falha ao processar o arquivo {filename}: {e}")
+        print(f"❌ Falha ao processar o arquivo {filename}: {e}")
 
 # Execução do loop principal
 
@@ -94,6 +91,7 @@ years = list(range(2022, today_year + 1))
 for year in years:
     for month in months:
         for taxi_type_filename, taxi_type_folder in TAXI_TYPES.items():
+            print(f"\n>>> Processando: {taxi_type_filename} | Ano: {year} | Mês: {month}")
             trusted_transform(
                 s3=s3,
                 month=month,
