@@ -16,6 +16,7 @@ spark = SparkSession.builder \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
     .config("spark.jars", jars_path) \
     .config("spark.sql.debug.maxToStringFields", "100") \
+    .config("spark.executor.memory", "4g") \ # Ajuste a memória do executor
     .getOrCreate()
 
 # Mapeamento dos tipos de táxi
