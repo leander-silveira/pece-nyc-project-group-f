@@ -35,11 +35,7 @@ aws emr create-cluster \
 ![image](https://github.com/user-attachments/assets/ceeb0427-f4f5-4d46-9e22-aafd26affde1)
 
 
-![image](https://github.com/user-attachments/assets/75dcbb36-7b2f-4bd6-8896-6bc704bed207)
-
-
-
-
+![image](https://github.com/user-attachments/assets/e8be5147-5a9d-4cdc-aae3-0caf4eeb2bb4)
 
 
 Criar um step manualmente
