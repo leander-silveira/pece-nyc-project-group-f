@@ -51,6 +51,17 @@ aws emr add-steps \
   --region us-east-1
 ```
 
+```
+aws emr add-steps \
+  --cluster-id j-3J5BXW4H7BLGY \
+  --steps '[{
+    "Type":"Spark",
+    "Name":"NYC Trusted Transform",
+    "ActionOnFailure":"CONTINUE",
+    "Args":["spark-submit","--deploy-mode","cluster","--master","yarn","--conf","spark.pyspark.python=python3","s3://mba-nyc-dataset/emr/scripts/trusted_transform.py"]
+  }]' \
+  --region us-east-1
+```
 
 ![image](https://github.com/user-attachments/assets/93109078-f82f-4ea3-bf2d-103ed3d8fa48)
 
