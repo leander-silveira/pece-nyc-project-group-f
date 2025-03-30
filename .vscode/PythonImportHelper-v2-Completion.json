@@ -1,0 +1,1241 @@
+[
+    {
+        "label": "os,",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os.",
+        "description": "os.",
+        "detail": "os.",
+        "documentation": {}
+    },
+    {
+        "label": "requests",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "requests",
+        "description": "requests",
+        "detail": "requests",
+        "documentation": {}
+    },
+    {
+        "label": "BeautifulSoup",
+        "importPath": "bs4",
+        "description": "bs4",
+        "isExtraImport": true,
+        "detail": "bs4",
+        "documentation": {}
+    },
+    {
+        "label": "BeautifulSoup",
+        "importPath": "bs4",
+        "description": "bs4",
+        "isExtraImport": true,
+        "detail": "bs4",
+        "documentation": {}
+    },
+    {
+        "label": "BeautifulSoup",
+        "importPath": "bs4",
+        "description": "bs4",
+        "isExtraImport": true,
+        "detail": "bs4",
+        "documentation": {}
+    },
+    {
+        "label": "BeautifulSoup",
+        "importPath": "bs4",
+        "description": "bs4",
+        "isExtraImport": true,
+        "detail": "bs4",
+        "documentation": {}
+    },
+    {
+        "label": "os",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "os",
+        "description": "os",
+        "detail": "os",
+        "documentation": {}
+    },
+    {
+        "label": "boto3",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "boto3",
+        "description": "boto3",
+        "detail": "boto3",
+        "documentation": {}
+    },
+    {
+        "label": "re",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "re",
+        "description": "re",
+        "detail": "re",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "datetime",
+        "description": "datetime",
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "timedelta",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "datetime",
+        "importPath": "datetime",
+        "description": "datetime",
+        "isExtraImport": true,
+        "detail": "datetime",
+        "documentation": {}
+    },
+    {
+        "label": "SparkSession",
+        "importPath": "pyspark.sql",
+        "description": "pyspark.sql",
+        "isExtraImport": true,
+        "detail": "pyspark.sql",
+        "documentation": {}
+    },
+    {
+        "label": "SparkSession",
+        "importPath": "pyspark.sql",
+        "description": "pyspark.sql",
+        "isExtraImport": true,
+        "detail": "pyspark.sql",
+        "documentation": {}
+    },
+    {
+        "label": "SparkSession",
+        "importPath": "pyspark.sql",
+        "description": "pyspark.sql",
+        "isExtraImport": true,
+        "detail": "pyspark.sql",
+        "documentation": {}
+    },
+    {
+        "label": "SparkSession",
+        "importPath": "pyspark.sql",
+        "description": "pyspark.sql",
+        "isExtraImport": true,
+        "detail": "pyspark.sql",
+        "documentation": {}
+    },
+    {
+        "label": "SparkSession",
+        "importPath": "pyspark.sql",
+        "description": "pyspark.sql",
+        "isExtraImport": true,
+        "detail": "pyspark.sql",
+        "documentation": {}
+    },
+    {
+        "label": "SparkSession",
+        "importPath": "pyspark.sql",
+        "description": "pyspark.sql",
+        "isExtraImport": true,
+        "detail": "pyspark.sql",
+        "documentation": {}
+    },
+    {
+        "label": "col",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "col",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "when",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "trim",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "current_timestamp",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "lower",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "lit",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "col",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "when",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "trim",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "current_timestamp",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "lower",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "lit",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "col",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "when",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "trim",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "current_timestamp",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "lower",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "lit",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "col",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "when",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "trim",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "current_timestamp",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "lower",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "lit",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "col",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "when",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "trim",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "current_timestamp",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "lower",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "lit",
+        "importPath": "pyspark.sql.functions",
+        "description": "pyspark.sql.functions",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.functions",
+        "documentation": {}
+    },
+    {
+        "label": "IntegerType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "FloatType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "StringType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "TimestampType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "IntegerType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "FloatType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "StringType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "TimestampType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "IntegerType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "FloatType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "StringType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "TimestampType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "IntegerType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "FloatType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "StringType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "TimestampType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "IntegerType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "FloatType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "StringType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "TimestampType",
+        "importPath": "pyspark.sql.types",
+        "description": "pyspark.sql.types",
+        "isExtraImport": true,
+        "detail": "pyspark.sql.types",
+        "documentation": {}
+    },
+    {
+        "label": "tqdm",
+        "importPath": "tqdm",
+        "description": "tqdm",
+        "isExtraImport": true,
+        "detail": "tqdm",
+        "documentation": {}
+    },
+    {
+        "label": "BytesIO",
+        "importPath": "io",
+        "description": "io",
+        "isExtraImport": true,
+        "detail": "io",
+        "documentation": {}
+    },
+    {
+        "label": "time",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "time",
+        "description": "time",
+        "detail": "time",
+        "documentation": {}
+    },
+    {
+        "label": "json",
+        "kind": 6,
+        "isExtraImport": true,
+        "importPath": "json",
+        "description": "json",
+        "detail": "json",
+        "documentation": {}
+    },
+    {
+        "label": "url",
+        "kind": 5,
+        "importPath": "draft.extraction_process",
+        "description": "draft.extraction_process",
+        "peekOfCode": "url = 'https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page'\nresponse = requests.get(url)\nif response.status_code == 200:\n    soup = BeautifulSoup(response.content, 'html.parser')\n    links = soup.find_all('a', href=True)\n    years = [year for year in range(2020,2025)]\n    months = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]\n    taxi_types = {\n        'fhv_tripdata':'forHireVehicle',\n        'green_tripdata':'greenTaxi',",
+        "detail": "draft.extraction_process",
+        "documentation": {}
+    },
+    {
+        "label": "response",
+        "kind": 5,
+        "importPath": "draft.extraction_process",
+        "description": "draft.extraction_process",
+        "peekOfCode": "response = requests.get(url)\nif response.status_code == 200:\n    soup = BeautifulSoup(response.content, 'html.parser')\n    links = soup.find_all('a', href=True)\n    years = [year for year in range(2020,2025)]\n    months = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]\n    taxi_types = {\n        'fhv_tripdata':'forHireVehicle',\n        'green_tripdata':'greenTaxi',\n        'yellow_tripdata':'yellowTaxi',",
+        "detail": "draft.extraction_process",
+        "documentation": {}
+    },
+    {
+        "label": "get_download_links",
+        "kind": 2,
+        "importPath": "draft.lambda",
+        "description": "draft.lambda",
+        "peekOfCode": "def get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    response = requests.get(BASE_URL)\n    response.raise_for_status()\n    soup = BeautifulSoup(response.text, \"html.parser\")\n    links = {}\n    # Procura links para arquivos CSV e Parquet\n    for link in soup.find_all(\"a\", href=True):\n        href = link[\"href\"]\n        if \"tripdata\" in href and (href.endswith(\".parquet\") or href.endswith(\".csv\")):",
+        "detail": "draft.lambda",
+        "documentation": {}
+    },
+    {
+        "label": "extract_year_month",
+        "kind": 2,
+        "importPath": "draft.lambda",
+        "description": "draft.lambda",
+        "peekOfCode": "def extract_year_month(filename):\n    match = re.search(r\"(\\d{4})-(\\d{2})\", filename)\n    if match:\n        return match.groups()\n    return None, None\n# Função para fazer download e enviar diretamente para o S3\ndef download_and_upload_to_s3(url, year, month):\n    filename = url.split(\"/\")[-1]\n    s3_key = f\"{S3_PREFIX}/{year}/{month}/{filename}\"\n    # Verifica se o arquivo já existe no S3",
+        "detail": "draft.lambda",
+        "documentation": {}
+    },
+    {
+        "label": "download_and_upload_to_s3",
+        "kind": 2,
+        "importPath": "draft.lambda",
+        "description": "draft.lambda",
+        "peekOfCode": "def download_and_upload_to_s3(url, year, month):\n    filename = url.split(\"/\")[-1]\n    s3_key = f\"{S3_PREFIX}/{year}/{month}/{filename}\"\n    # Verifica se o arquivo já existe no S3\n    try:\n        s3.head_object(Bucket=S3_BUCKET, Key=s3_key)\n        print(f\"⏩ {s3_key} já existe no S3, pulando download.\")\n        return\n    except:\n        pass  # Continua para fazer o download",
+        "detail": "draft.lambda",
+        "documentation": {}
+    },
+    {
+        "label": "lambda_handler",
+        "kind": 2,
+        "importPath": "draft.lambda",
+        "description": "draft.lambda",
+        "peekOfCode": "def lambda_handler(event, context):\n    # Obtém os parâmetros de início e fim do evento\n    start_date = event.get(\"start_date\", \"2023-01\")  # Default para janeiro de 2023\n    end_date = event.get(\"end_date\", \"2024-12\")  # Default para dezembro de 2024\n    start = datetime.strptime(start_date, \"%Y-%m\")\n    end = datetime.strptime(end_date, \"%Y-%m\")\n    print(f\"🔹 Baixando datasets de {start_date} até {end_date}...\")\n    # Obtém todos os links disponíveis na página\n    all_links = get_download_links()\n    # Loop para processar os meses dentro do intervalo definido",
+        "detail": "draft.lambda",
+        "documentation": {}
+    },
+    {
+        "label": "S3_BUCKET",
+        "kind": 5,
+        "importPath": "draft.lambda",
+        "description": "draft.lambda",
+        "peekOfCode": "S3_BUCKET = \"mba-nyc-dataset\"\nS3_PREFIX = \"raw\"\n# URL da página de datasets\nBASE_URL = \"https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page\"\n# Inicializa cliente S3\ns3 = boto3.client(\"s3\")\n# Função para extrair os links dos datasets\ndef get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    response = requests.get(BASE_URL)",
+        "detail": "draft.lambda",
+        "documentation": {}
+    },
+    {
+        "label": "S3_PREFIX",
+        "kind": 5,
+        "importPath": "draft.lambda",
+        "description": "draft.lambda",
+        "peekOfCode": "S3_PREFIX = \"raw\"\n# URL da página de datasets\nBASE_URL = \"https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page\"\n# Inicializa cliente S3\ns3 = boto3.client(\"s3\")\n# Função para extrair os links dos datasets\ndef get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    response = requests.get(BASE_URL)\n    response.raise_for_status()",
+        "detail": "draft.lambda",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_URL",
+        "kind": 5,
+        "importPath": "draft.lambda",
+        "description": "draft.lambda",
+        "peekOfCode": "BASE_URL = \"https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page\"\n# Inicializa cliente S3\ns3 = boto3.client(\"s3\")\n# Função para extrair os links dos datasets\ndef get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    response = requests.get(BASE_URL)\n    response.raise_for_status()\n    soup = BeautifulSoup(response.text, \"html.parser\")\n    links = {}",
+        "detail": "draft.lambda",
+        "documentation": {}
+    },
+    {
+        "label": "s3",
+        "kind": 5,
+        "importPath": "draft.lambda",
+        "description": "draft.lambda",
+        "peekOfCode": "s3 = boto3.client(\"s3\")\n# Função para extrair os links dos datasets\ndef get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    response = requests.get(BASE_URL)\n    response.raise_for_status()\n    soup = BeautifulSoup(response.text, \"html.parser\")\n    links = {}\n    # Procura links para arquivos CSV e Parquet\n    for link in soup.find_all(\"a\", href=True):",
+        "detail": "draft.lambda",
+        "documentation": {}
+    },
+    {
+        "label": "home_dir",
+        "kind": 5,
+        "importPath": "draft.load_dw_to_rds",
+        "description": "draft.load_dw_to_rds",
+        "peekOfCode": "home_dir = os.environ[\"HOME\"]\njars_path = f\"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar\"\n# Criar sessão do Spark com suporte a S3 e JDBC\nspark = SparkSession.builder \\\n    .appName(\"S3 DW to RDS\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.sql.adaptive.enabled\", \"true\") \\\n    .config(\"spark.sql.parquet.mergeSchema\", \"false\") \\\n    .config(\"spark.sql.parquet.filterPushdown\", \"true\") \\",
+        "detail": "draft.load_dw_to_rds",
+        "documentation": {}
+    },
+    {
+        "label": "jars_path",
+        "kind": 5,
+        "importPath": "draft.load_dw_to_rds",
+        "description": "draft.load_dw_to_rds",
+        "peekOfCode": "jars_path = f\"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar\"\n# Criar sessão do Spark com suporte a S3 e JDBC\nspark = SparkSession.builder \\\n    .appName(\"S3 DW to RDS\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.sql.adaptive.enabled\", \"true\") \\\n    .config(\"spark.sql.parquet.mergeSchema\", \"false\") \\\n    .config(\"spark.sql.parquet.filterPushdown\", \"true\") \\\n    .config(\"spark.sql.files.ignoreCorruptFiles\", \"true\") \\",
+        "detail": "draft.load_dw_to_rds",
+        "documentation": {}
+    },
+    {
+        "label": "spark",
+        "kind": 5,
+        "importPath": "draft.load_dw_to_rds",
+        "description": "draft.load_dw_to_rds",
+        "peekOfCode": "spark = SparkSession.builder \\\n    .appName(\"S3 DW to RDS\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.sql.adaptive.enabled\", \"true\") \\\n    .config(\"spark.sql.parquet.mergeSchema\", \"false\") \\\n    .config(\"spark.sql.parquet.filterPushdown\", \"true\") \\\n    .config(\"spark.sql.files.ignoreCorruptFiles\", \"true\") \\\n    .config(\"spark.jars\", jars_path) \\\n    .getOrCreate()",
+        "detail": "draft.load_dw_to_rds",
+        "documentation": {}
+    },
+    {
+        "label": "s3_path",
+        "kind": 5,
+        "importPath": "draft.load_dw_to_rds",
+        "description": "draft.load_dw_to_rds",
+        "peekOfCode": "s3_path = \"s3a://mba-nyc-dataset/dw/taxis/\"\njdbc_url = \"jdbc:mysql://database-1.coseekllgrql.us-east-1.rds.amazonaws.com:3306/database-1\"\ndb_table = \"taxi_trips\"\ndb_user = \"admin\"  # Substitua pelo usuário correto\ndb_password = \"pecenycgrupof\"  # Substitua pela senha correta (não recomendado hardcode)\n# Ler os dados da camada DW (Parquet)\ndf = spark.read.parquet(s3_path)\n# Verificar se há dados antes de continuar\nif df.isEmpty():\n    print(\"Nenhum dado encontrado na camada DW. Processo encerrado.\")",
+        "detail": "draft.load_dw_to_rds",
+        "documentation": {}
+    },
+    {
+        "label": "jdbc_url",
+        "kind": 5,
+        "importPath": "draft.load_dw_to_rds",
+        "description": "draft.load_dw_to_rds",
+        "peekOfCode": "jdbc_url = \"jdbc:mysql://database-1.coseekllgrql.us-east-1.rds.amazonaws.com:3306/database-1\"\ndb_table = \"taxi_trips\"\ndb_user = \"admin\"  # Substitua pelo usuário correto\ndb_password = \"pecenycgrupof\"  # Substitua pela senha correta (não recomendado hardcode)\n# Ler os dados da camada DW (Parquet)\ndf = spark.read.parquet(s3_path)\n# Verificar se há dados antes de continuar\nif df.isEmpty():\n    print(\"Nenhum dado encontrado na camada DW. Processo encerrado.\")\nelse:",
+        "detail": "draft.load_dw_to_rds",
+        "documentation": {}
+    },
+    {
+        "label": "db_table",
+        "kind": 5,
+        "importPath": "draft.load_dw_to_rds",
+        "description": "draft.load_dw_to_rds",
+        "peekOfCode": "db_table = \"taxi_trips\"\ndb_user = \"admin\"  # Substitua pelo usuário correto\ndb_password = \"pecenycgrupof\"  # Substitua pela senha correta (não recomendado hardcode)\n# Ler os dados da camada DW (Parquet)\ndf = spark.read.parquet(s3_path)\n# Verificar se há dados antes de continuar\nif df.isEmpty():\n    print(\"Nenhum dado encontrado na camada DW. Processo encerrado.\")\nelse:\n    # Remover duplicatas e valores nulos",
+        "detail": "draft.load_dw_to_rds",
+        "documentation": {}
+    },
+    {
+        "label": "db_user",
+        "kind": 5,
+        "importPath": "draft.load_dw_to_rds",
+        "description": "draft.load_dw_to_rds",
+        "peekOfCode": "db_user = \"admin\"  # Substitua pelo usuário correto\ndb_password = \"pecenycgrupof\"  # Substitua pela senha correta (não recomendado hardcode)\n# Ler os dados da camada DW (Parquet)\ndf = spark.read.parquet(s3_path)\n# Verificar se há dados antes de continuar\nif df.isEmpty():\n    print(\"Nenhum dado encontrado na camada DW. Processo encerrado.\")\nelse:\n    # Remover duplicatas e valores nulos\n    df_transformed = df.dropDuplicates().dropna()",
+        "detail": "draft.load_dw_to_rds",
+        "documentation": {}
+    },
+    {
+        "label": "db_password",
+        "kind": 5,
+        "importPath": "draft.load_dw_to_rds",
+        "description": "draft.load_dw_to_rds",
+        "peekOfCode": "db_password = \"pecenycgrupof\"  # Substitua pela senha correta (não recomendado hardcode)\n# Ler os dados da camada DW (Parquet)\ndf = spark.read.parquet(s3_path)\n# Verificar se há dados antes de continuar\nif df.isEmpty():\n    print(\"Nenhum dado encontrado na camada DW. Processo encerrado.\")\nelse:\n    # Remover duplicatas e valores nulos\n    df_transformed = df.dropDuplicates().dropna()\n    # Ajustar tipos de colunas conforme o schema do RDS (ajuste conforme necessário)",
+        "detail": "draft.load_dw_to_rds",
+        "documentation": {}
+    },
+    {
+        "label": "df",
+        "kind": 5,
+        "importPath": "draft.load_dw_to_rds",
+        "description": "draft.load_dw_to_rds",
+        "peekOfCode": "df = spark.read.parquet(s3_path)\n# Verificar se há dados antes de continuar\nif df.isEmpty():\n    print(\"Nenhum dado encontrado na camada DW. Processo encerrado.\")\nelse:\n    # Remover duplicatas e valores nulos\n    df_transformed = df.dropDuplicates().dropna()\n    # Ajustar tipos de colunas conforme o schema do RDS (ajuste conforme necessário)\n    df_transformed = df_transformed.withColumn(\"trip_distance\", col(\"trip_distance\").cast(\"double\")) \\\n                                   .withColumn(\"fare_amount\", col(\"fare_amount\").cast(\"double\")) \\",
+        "detail": "draft.load_dw_to_rds",
+        "documentation": {}
+    },
+    {
+        "label": "get_download_links",
+        "kind": 2,
+        "importPath": "draft.load_to_raw",
+        "description": "draft.load_to_raw",
+        "peekOfCode": "def get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    attempts = 5\n    for attempt in range(attempts):\n        try:\n            response = requests.get(BASE_URL, timeout=10)\n            response.raise_for_status()\n            break\n        except requests.exceptions.RequestException as e:\n            print(f\"⚠ Erro ao carregar a página (tentativa {attempt + 1}/{attempts}): {e}\")",
+        "detail": "draft.load_to_raw",
+        "documentation": {}
+    },
+    {
+        "label": "extract_metadata",
+        "kind": 2,
+        "importPath": "draft.load_to_raw",
+        "description": "draft.load_to_raw",
+        "peekOfCode": "def extract_metadata(filename):\n    match = re.search(r\"(yellow|green|fhv|hvfhv)_tripdata_(\\d{4})-(\\d{2})\", filename, re.IGNORECASE)\n    return match.groups() if match else (None, None, None)\ndef download_and_upload_to_s3(url, taxi_type, year, filename):\n    s3_key = f\"{S3_PREFIX}/{taxi_type}/{year}/{filename}\"\n    print(f\"⬇ Baixando {filename}...\")\n    try:\n        response = requests.get(url, stream=True, timeout=60)\n        response.raise_for_status()\n        total_size = int(response.headers.get(\"content-length\", 0))",
+        "detail": "draft.load_to_raw",
+        "documentation": {}
+    },
+    {
+        "label": "download_and_upload_to_s3",
+        "kind": 2,
+        "importPath": "draft.load_to_raw",
+        "description": "draft.load_to_raw",
+        "peekOfCode": "def download_and_upload_to_s3(url, taxi_type, year, filename):\n    s3_key = f\"{S3_PREFIX}/{taxi_type}/{year}/{filename}\"\n    print(f\"⬇ Baixando {filename}...\")\n    try:\n        response = requests.get(url, stream=True, timeout=60)\n        response.raise_for_status()\n        total_size = int(response.headers.get(\"content-length\", 0))\n        total_size_mb = total_size / (1024 * 1024)\n        print(f\"📥 Tamanho do arquivo: {total_size_mb:.2f} MB\")\n        progress_bar = tqdm(total=total_size_mb, unit=\"MB\", unit_scale=True, desc=\"Baixando\", colour=\"green\")",
+        "detail": "draft.load_to_raw",
+        "documentation": {}
+    },
+    {
+        "label": "main",
+        "kind": 2,
+        "importPath": "draft.load_to_raw",
+        "description": "draft.load_to_raw",
+        "peekOfCode": "def main(years=[\"2022\", \"2023\", \"2024\"], month=None):\n    print(f\"📅 Buscando datasets para {years} e mês: {month if month else 'todos'}...\")\n    all_links = get_download_links()\n    for taxi_type in TAXI_TYPES:\n        for year in years:\n            for m in range(1, 13):\n                month_str = f\"{m:02d}\"\n                dataset_key = f\"{taxi_type}_tripdata_{year}-{month_str}.parquet\"\n                if month and month_str != month:\n                    continue",
+        "detail": "draft.load_to_raw",
+        "documentation": {}
+    },
+    {
+        "label": "S3_BUCKET",
+        "kind": 5,
+        "importPath": "draft.load_to_raw",
+        "description": "draft.load_to_raw",
+        "peekOfCode": "S3_BUCKET = \"mba-nyc-dataset\"\nS3_PREFIX = \"raw\"\nBASE_URL = \"https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page\"\ns3 = boto3.client(\"s3\")\nTAXI_TYPES = [\"yellow\", \"green\", \"fhv\", \"hvfhv\"]\nfailed_uploads = []\ndef get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    attempts = 5\n    for attempt in range(attempts):",
+        "detail": "draft.load_to_raw",
+        "documentation": {}
+    },
+    {
+        "label": "S3_PREFIX",
+        "kind": 5,
+        "importPath": "draft.load_to_raw",
+        "description": "draft.load_to_raw",
+        "peekOfCode": "S3_PREFIX = \"raw\"\nBASE_URL = \"https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page\"\ns3 = boto3.client(\"s3\")\nTAXI_TYPES = [\"yellow\", \"green\", \"fhv\", \"hvfhv\"]\nfailed_uploads = []\ndef get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    attempts = 5\n    for attempt in range(attempts):\n        try:",
+        "detail": "draft.load_to_raw",
+        "documentation": {}
+    },
+    {
+        "label": "BASE_URL",
+        "kind": 5,
+        "importPath": "draft.load_to_raw",
+        "description": "draft.load_to_raw",
+        "peekOfCode": "BASE_URL = \"https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page\"\ns3 = boto3.client(\"s3\")\nTAXI_TYPES = [\"yellow\", \"green\", \"fhv\", \"hvfhv\"]\nfailed_uploads = []\ndef get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    attempts = 5\n    for attempt in range(attempts):\n        try:\n            response = requests.get(BASE_URL, timeout=10)",
+        "detail": "draft.load_to_raw",
+        "documentation": {}
+    },
+    {
+        "label": "s3",
+        "kind": 5,
+        "importPath": "draft.load_to_raw",
+        "description": "draft.load_to_raw",
+        "peekOfCode": "s3 = boto3.client(\"s3\")\nTAXI_TYPES = [\"yellow\", \"green\", \"fhv\", \"hvfhv\"]\nfailed_uploads = []\ndef get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    attempts = 5\n    for attempt in range(attempts):\n        try:\n            response = requests.get(BASE_URL, timeout=10)\n            response.raise_for_status()",
+        "detail": "draft.load_to_raw",
+        "documentation": {}
+    },
+    {
+        "label": "TAXI_TYPES",
+        "kind": 5,
+        "importPath": "draft.load_to_raw",
+        "description": "draft.load_to_raw",
+        "peekOfCode": "TAXI_TYPES = [\"yellow\", \"green\", \"fhv\", \"hvfhv\"]\nfailed_uploads = []\ndef get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    attempts = 5\n    for attempt in range(attempts):\n        try:\n            response = requests.get(BASE_URL, timeout=10)\n            response.raise_for_status()\n            break",
+        "detail": "draft.load_to_raw",
+        "documentation": {}
+    },
+    {
+        "label": "failed_uploads",
+        "kind": 5,
+        "importPath": "draft.load_to_raw",
+        "description": "draft.load_to_raw",
+        "peekOfCode": "failed_uploads = []\ndef get_download_links():\n    print(\"🔍 Extraindo links da página oficial...\")\n    attempts = 5\n    for attempt in range(attempts):\n        try:\n            response = requests.get(BASE_URL, timeout=10)\n            response.raise_for_status()\n            break\n        except requests.exceptions.RequestException as e:",
+        "detail": "draft.load_to_raw",
+        "documentation": {}
+    },
+    {
+        "label": "home_dir",
+        "kind": 5,
+        "importPath": "draft.load_to_trusted",
+        "description": "draft.load_to_trusted",
+        "peekOfCode": "home_dir = os.environ[\"HOME\"]\njars_path = f\"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar\"\n# Criar sessão Spark com suporte ao S3 no Cloud9\nspark = SparkSession.builder \\\n    .appName(\"NYC Taxi Data Processing\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.jars\", jars_path) \\\n    .getOrCreate()\n# 🚀 Ativar configuração para evitar `_temporary/`",
+        "detail": "draft.load_to_trusted",
+        "documentation": {}
+    },
+    {
+        "label": "jars_path",
+        "kind": 5,
+        "importPath": "draft.load_to_trusted",
+        "description": "draft.load_to_trusted",
+        "peekOfCode": "jars_path = f\"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar\"\n# Criar sessão Spark com suporte ao S3 no Cloud9\nspark = SparkSession.builder \\\n    .appName(\"NYC Taxi Data Processing\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.jars\", jars_path) \\\n    .getOrCreate()\n# 🚀 Ativar configuração para evitar `_temporary/`\nspark.conf.set(\"spark.sql.sources.commitProtocolClass\", \"org.apache.spark.sql.execution.datasources.SQLHadoopMapReduceCommitProtocol\")",
+        "detail": "draft.load_to_trusted",
+        "documentation": {}
+    },
+    {
+        "label": "spark",
+        "kind": 5,
+        "importPath": "draft.load_to_trusted",
+        "description": "draft.load_to_trusted",
+        "peekOfCode": "spark = SparkSession.builder \\\n    .appName(\"NYC Taxi Data Processing\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.jars\", jars_path) \\\n    .getOrCreate()\n# 🚀 Ativar configuração para evitar `_temporary/`\nspark.conf.set(\"spark.sql.sources.commitProtocolClass\", \"org.apache.spark.sql.execution.datasources.SQLHadoopMapReduceCommitProtocol\")\nprint(\"✅ Sessão Spark iniciada!\")\n# Caminhos S3",
+        "detail": "draft.load_to_trusted",
+        "documentation": {}
+    },
+    {
+        "label": "raw_bucket",
+        "kind": 5,
+        "importPath": "draft.load_to_trusted",
+        "description": "draft.load_to_trusted",
+        "peekOfCode": "raw_bucket = \"s3a://mba-nyc-dataset/raw\"\ntrusted_bucket = \"s3a://mba-nyc-dataset/trusted/all_taxi_trips\"\n# Configuração para ler múltiplos anos e meses\nyears = [\"2023\", \"2024\"]\nmonths = [f\"{m:02d}\" for m in range(1, 13)]\ntaxi_types = [\"yellow\", \"green\", \"fhv\", \"hvfhv\"]\n# Lista para armazenar todos os DataFrames antes de unir\nall_taxi_dfs = []\n# Schema final padronizado para unificação\nfinal_schema = {",
+        "detail": "draft.load_to_trusted",
+        "documentation": {}
+    },
+    {
+        "label": "trusted_bucket",
+        "kind": 5,
+        "importPath": "draft.load_to_trusted",
+        "description": "draft.load_to_trusted",
+        "peekOfCode": "trusted_bucket = \"s3a://mba-nyc-dataset/trusted/all_taxi_trips\"\n# Configuração para ler múltiplos anos e meses\nyears = [\"2023\", \"2024\"]\nmonths = [f\"{m:02d}\" for m in range(1, 13)]\ntaxi_types = [\"yellow\", \"green\", \"fhv\", \"hvfhv\"]\n# Lista para armazenar todos os DataFrames antes de unir\nall_taxi_dfs = []\n# Schema final padronizado para unificação\nfinal_schema = {\n    \"vendor_id\": StringType(),",
+        "detail": "draft.load_to_trusted",
+        "documentation": {}
+    },
+    {
+        "label": "years",
+        "kind": 5,
+        "importPath": "draft.load_to_trusted",
+        "description": "draft.load_to_trusted",
+        "peekOfCode": "years = [\"2023\", \"2024\"]\nmonths = [f\"{m:02d}\" for m in range(1, 13)]\ntaxi_types = [\"yellow\", \"green\", \"fhv\", \"hvfhv\"]\n# Lista para armazenar todos os DataFrames antes de unir\nall_taxi_dfs = []\n# Schema final padronizado para unificação\nfinal_schema = {\n    \"vendor_id\": StringType(),\n    \"pickup_datetime\": TimestampType(),\n    \"dropoff_datetime\": TimestampType(),",
+        "detail": "draft.load_to_trusted",
+        "documentation": {}
+    },
+    {
+        "label": "months",
+        "kind": 5,
+        "importPath": "draft.load_to_trusted",
+        "description": "draft.load_to_trusted",
+        "peekOfCode": "months = [f\"{m:02d}\" for m in range(1, 13)]\ntaxi_types = [\"yellow\", \"green\", \"fhv\", \"hvfhv\"]\n# Lista para armazenar todos os DataFrames antes de unir\nall_taxi_dfs = []\n# Schema final padronizado para unificação\nfinal_schema = {\n    \"vendor_id\": StringType(),\n    \"pickup_datetime\": TimestampType(),\n    \"dropoff_datetime\": TimestampType(),\n    \"passenger_count\": IntegerType(),",
+        "detail": "draft.load_to_trusted",
+        "documentation": {}
+    },
+    {
+        "label": "taxi_types",
+        "kind": 5,
+        "importPath": "draft.load_to_trusted",
+        "description": "draft.load_to_trusted",
+        "peekOfCode": "taxi_types = [\"yellow\", \"green\", \"fhv\", \"hvfhv\"]\n# Lista para armazenar todos os DataFrames antes de unir\nall_taxi_dfs = []\n# Schema final padronizado para unificação\nfinal_schema = {\n    \"vendor_id\": StringType(),\n    \"pickup_datetime\": TimestampType(),\n    \"dropoff_datetime\": TimestampType(),\n    \"passenger_count\": IntegerType(),\n    \"trip_distance\": FloatType(),",
+        "detail": "draft.load_to_trusted",
+        "documentation": {}
+    },
+    {
+        "label": "all_taxi_dfs",
+        "kind": 5,
+        "importPath": "draft.load_to_trusted",
+        "description": "draft.load_to_trusted",
+        "peekOfCode": "all_taxi_dfs = []\n# Schema final padronizado para unificação\nfinal_schema = {\n    \"vendor_id\": StringType(),\n    \"pickup_datetime\": TimestampType(),\n    \"dropoff_datetime\": TimestampType(),\n    \"passenger_count\": IntegerType(),\n    \"trip_distance\": FloatType(),\n    \"fare_amount\": FloatType(),\n    \"total_amount\": FloatType(),",
+        "detail": "draft.load_to_trusted",
+        "documentation": {}
+    },
+    {
+        "label": "final_schema",
+        "kind": 5,
+        "importPath": "draft.load_to_trusted",
+        "description": "draft.load_to_trusted",
+        "peekOfCode": "final_schema = {\n    \"vendor_id\": StringType(),\n    \"pickup_datetime\": TimestampType(),\n    \"dropoff_datetime\": TimestampType(),\n    \"passenger_count\": IntegerType(),\n    \"trip_distance\": FloatType(),\n    \"fare_amount\": FloatType(),\n    \"total_amount\": FloatType(),\n    \"PULocationID\": IntegerType(),\n    \"DOLocationID\": IntegerType(),",
+        "detail": "draft.load_to_trusted",
+        "documentation": {}
+    },
+    {
+        "label": "home_dir",
+        "kind": 5,
+        "importPath": "draft.load_trusted_to_dw",
+        "description": "draft.load_trusted_to_dw",
+        "peekOfCode": "home_dir = os.environ[\"HOME\"]\njars_path = f\"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar\"\n# Criar sessão Spark com suporte ao S3 no Cloud9\nspark = SparkSession.builder \\\n    .appName(\"NYC Taxi Data Processing\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.jars\", jars_path) \\\n    .getOrCreate()\n# 🚀 Ativar configuração para evitar `_temporary/`",
+        "detail": "draft.load_trusted_to_dw",
+        "documentation": {}
+    },
+    {
+        "label": "jars_path",
+        "kind": 5,
+        "importPath": "draft.load_trusted_to_dw",
+        "description": "draft.load_trusted_to_dw",
+        "peekOfCode": "jars_path = f\"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar\"\n# Criar sessão Spark com suporte ao S3 no Cloud9\nspark = SparkSession.builder \\\n    .appName(\"NYC Taxi Data Processing\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.jars\", jars_path) \\\n    .getOrCreate()\n# 🚀 Ativar configuração para evitar `_temporary/`\nspark.conf.set(\"spark.sql.sources.commitProtocolClass\", \"org.apache.spark.sql.execution.datasources.SQLHadoopMapReduceCommitProtocol\")",
+        "detail": "draft.load_trusted_to_dw",
+        "documentation": {}
+    },
+    {
+        "label": "spark",
+        "kind": 5,
+        "importPath": "draft.load_trusted_to_dw",
+        "description": "draft.load_trusted_to_dw",
+        "peekOfCode": "spark = SparkSession.builder \\\n    .appName(\"NYC Taxi Data Processing\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.jars\", jars_path) \\\n    .getOrCreate()\n# 🚀 Ativar configuração para evitar `_temporary/`\nspark.conf.set(\"spark.sql.sources.commitProtocolClass\", \"org.apache.spark.sql.execution.datasources.SQLHadoopMapReduceCommitProtocol\")\n# Definir os caminhos no S3\ntrusted_path = \"s3a://mba-nyc-dataset/trusted/all_taxi_trips/\"",
+        "detail": "draft.load_trusted_to_dw",
+        "documentation": {}
+    },
+    {
+        "label": "trusted_path",
+        "kind": 5,
+        "importPath": "draft.load_trusted_to_dw",
+        "description": "draft.load_trusted_to_dw",
+        "peekOfCode": "trusted_path = \"s3a://mba-nyc-dataset/trusted/all_taxi_trips/\"\ndw_path = \"s3a://mba-nyc-dataset/dw/\"\n# Ler os dados da camada Trusted (Parquet)\ndf = spark.read.parquet(trusted_path)\n# Verificar se há dados antes de prosseguir\nif df.isEmpty():\n    print(\"Nenhum dado encontrado na camada Trusted. Processo encerrado.\")\nelse:\n    # Remover duplicatas e valores nulos\n    df_transformed = df.dropDuplicates().dropna()",
+        "detail": "draft.load_trusted_to_dw",
+        "documentation": {}
+    },
+    {
+        "label": "dw_path",
+        "kind": 5,
+        "importPath": "draft.load_trusted_to_dw",
+        "description": "draft.load_trusted_to_dw",
+        "peekOfCode": "dw_path = \"s3a://mba-nyc-dataset/dw/\"\n# Ler os dados da camada Trusted (Parquet)\ndf = spark.read.parquet(trusted_path)\n# Verificar se há dados antes de prosseguir\nif df.isEmpty():\n    print(\"Nenhum dado encontrado na camada Trusted. Processo encerrado.\")\nelse:\n    # Remover duplicatas e valores nulos\n    df_transformed = df.dropDuplicates().dropna()\n    # Opcional: Converter colunas para tipos apropriados (ajuste conforme necessário)",
+        "detail": "draft.load_trusted_to_dw",
+        "documentation": {}
+    },
+    {
+        "label": "df",
+        "kind": 5,
+        "importPath": "draft.load_trusted_to_dw",
+        "description": "draft.load_trusted_to_dw",
+        "peekOfCode": "df = spark.read.parquet(trusted_path)\n# Verificar se há dados antes de prosseguir\nif df.isEmpty():\n    print(\"Nenhum dado encontrado na camada Trusted. Processo encerrado.\")\nelse:\n    # Remover duplicatas e valores nulos\n    df_transformed = df.dropDuplicates().dropna()\n    # Opcional: Converter colunas para tipos apropriados (ajuste conforme necessário)\n    df_transformed = df_transformed.withColumn(\"trip_distance\", col(\"trip_distance\").cast(\"double\")) \\\n                                   .withColumn(\"fare_amount\", col(\"fare_amount\").cast(\"double\")) \\",
+        "detail": "draft.load_trusted_to_dw",
+        "documentation": {}
+    },
+    {
+        "label": "read_parquet_from_s3",
+        "kind": 2,
+        "importPath": "raw.read_raw_files",
+        "description": "raw.read_raw_files",
+        "peekOfCode": "def read_parquet_from_s3():\n    # Definir caminho correto para os JARs no Cloud9\n    home_dir = os.environ[\"HOME\"]\n    jars_path = f\"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar\"\n    # Criar sessão Spark com suporte ao S3 no Cloud9\n    spark = SparkSession.builder \\\n    .appName(\"NYC Taxi Data Processing\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.jars\", jars_path) \\",
+        "detail": "raw.read_raw_files",
+        "documentation": {}
+    },
+    {
+        "label": "url",
+        "kind": 5,
+        "importPath": "raw.s3_raw_extract_script",
+        "description": "raw.s3_raw_extract_script",
+        "peekOfCode": "url = 'https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page'\nresponse = requests.get(url)\ns3 = boto3.client(\"s3\")\nS3_BUCKET = \"mba-nyc-dataset-f\"\nS3_PREFIX = \"raw\"\nyear_today = datetime.datetime.now().year\nif response.status_code == 200:\n    soup = BeautifulSoup(response.content, 'html.parser')\n    links = soup.find_all('a', href=True)\n    years = [year for year in range(year_today, year_today+1)]",
+        "detail": "raw.s3_raw_extract_script",
+        "documentation": {}
+    },
+    {
+        "label": "response",
+        "kind": 5,
+        "importPath": "raw.s3_raw_extract_script",
+        "description": "raw.s3_raw_extract_script",
+        "peekOfCode": "response = requests.get(url)\ns3 = boto3.client(\"s3\")\nS3_BUCKET = \"mba-nyc-dataset-f\"\nS3_PREFIX = \"raw\"\nyear_today = datetime.datetime.now().year\nif response.status_code == 200:\n    soup = BeautifulSoup(response.content, 'html.parser')\n    links = soup.find_all('a', href=True)\n    years = [year for year in range(year_today, year_today+1)]\n    months = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]",
+        "detail": "raw.s3_raw_extract_script",
+        "documentation": {}
+    },
+    {
+        "label": "s3",
+        "kind": 5,
+        "importPath": "raw.s3_raw_extract_script",
+        "description": "raw.s3_raw_extract_script",
+        "peekOfCode": "s3 = boto3.client(\"s3\")\nS3_BUCKET = \"mba-nyc-dataset-f\"\nS3_PREFIX = \"raw\"\nyear_today = datetime.datetime.now().year\nif response.status_code == 200:\n    soup = BeautifulSoup(response.content, 'html.parser')\n    links = soup.find_all('a', href=True)\n    years = [year for year in range(year_today, year_today+1)]\n    months = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]\n    taxi_types = {",
+        "detail": "raw.s3_raw_extract_script",
+        "documentation": {}
+    },
+    {
+        "label": "S3_BUCKET",
+        "kind": 5,
+        "importPath": "raw.s3_raw_extract_script",
+        "description": "raw.s3_raw_extract_script",
+        "peekOfCode": "S3_BUCKET = \"mba-nyc-dataset-f\"\nS3_PREFIX = \"raw\"\nyear_today = datetime.datetime.now().year\nif response.status_code == 200:\n    soup = BeautifulSoup(response.content, 'html.parser')\n    links = soup.find_all('a', href=True)\n    years = [year for year in range(year_today, year_today+1)]\n    months = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]\n    taxi_types = {\n        'fhv_tripdata': 'forHireVehicle',",
+        "detail": "raw.s3_raw_extract_script",
+        "documentation": {}
+    },
+    {
+        "label": "S3_PREFIX",
+        "kind": 5,
+        "importPath": "raw.s3_raw_extract_script",
+        "description": "raw.s3_raw_extract_script",
+        "peekOfCode": "S3_PREFIX = \"raw\"\nyear_today = datetime.datetime.now().year\nif response.status_code == 200:\n    soup = BeautifulSoup(response.content, 'html.parser')\n    links = soup.find_all('a', href=True)\n    years = [year for year in range(year_today, year_today+1)]\n    months = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]\n    taxi_types = {\n        'fhv_tripdata': 'forHireVehicle',\n        'green_tripdata': 'greenTaxi',",
+        "detail": "raw.s3_raw_extract_script",
+        "documentation": {}
+    },
+    {
+        "label": "year_today",
+        "kind": 5,
+        "importPath": "raw.s3_raw_extract_script",
+        "description": "raw.s3_raw_extract_script",
+        "peekOfCode": "year_today = datetime.datetime.now().year\nif response.status_code == 200:\n    soup = BeautifulSoup(response.content, 'html.parser')\n    links = soup.find_all('a', href=True)\n    years = [year for year in range(year_today, year_today+1)]\n    months = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]\n    taxi_types = {\n        'fhv_tripdata': 'forHireVehicle',\n        'green_tripdata': 'greenTaxi',\n        'yellow_tripdata': 'yellowTaxi',",
+        "detail": "raw.s3_raw_extract_script",
+        "documentation": {}
+    },
+    {
+        "label": "apply_cleaning_rules",
+        "kind": 2,
+        "importPath": "trusted.cleaning",
+        "description": "trusted.cleaning",
+        "peekOfCode": "def apply_cleaning_rules(df, taxi_type):\n    problems = []\n    if taxi_type in ['yellowTaxi', 'greenTaxi']:\n        df = df.withColumn(\"has_problem\", lit(False))\n        df = df.withColumn(\"problem_description\", lit(\"\"))\n        df = df.withColumn(\"has_problem\", when(col(\"passenger_count\") <= 0, True).otherwise(col(\"has_problem\")))\n        df = df.withColumn(\"problem_description\", when(col(\"passenger_count\") <= 0, concat_ws(\";\", col(\"problem_description\"), lit(\"passenger_count <= 0\"))).otherwise(col(\"problem_description\")))\n        df = df.withColumn(\"has_problem\", when(col(\"trip_distance\") <= 0, True).otherwise(col(\"has_problem\")))\n        df = df.withColumn(\"problem_description\", when(col(\"trip_distance\") <= 0, concat_ws(\";\", col(\"problem_description\"), lit(\"trip_distance <= 0\"))).otherwise(col(\"problem_description\")))\n        df = df.withColumn(\"has_problem\", when(col(\"tpep_dropoff_datetime\") <= col(\"tpep_pickup_datetime\"), True).otherwise(col(\"has_problem\")))",
+        "detail": "trusted.cleaning",
+        "documentation": {}
+    },
+    {
+        "label": "trusted_transform",
+        "kind": 2,
+        "importPath": "trusted.cleaning",
+        "description": "trusted.cleaning",
+        "peekOfCode": "def trusted_transform(s3, month, year, taxi_type_folder, taxi_type_filename):\n    filename = f\"{taxi_type_filename}_{year}-{month}.parquet\"\n    path_filename = f\"{taxi_type_folder}/{year}/{filename}\"\n    bucket = \"mba-nyc-dataset\"\n    source_key = f\"raw/{path_filename}\"\n    destination_key = f\"trusted/{path_filename}\"\n    # Lê arquivo do S3\n    try:\n        df = spark.read.parquet(f\"s3a://{bucket}/{source_key}\")\n        df_cleaned = apply_cleaning_rules(df, taxi_type_folder)",
+        "detail": "trusted.cleaning",
+        "documentation": {}
+    },
+    {
+        "label": "home_dir",
+        "kind": 5,
+        "importPath": "trusted.cleaning",
+        "description": "trusted.cleaning",
+        "peekOfCode": "home_dir = os.environ[\"HOME\"]\njars_path = f\"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar\"\n# Inicializa Spark\nspark = SparkSession.builder \\\n    .appName(\"NYC Taxi Data Processing\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.jars\", jars_path) \\\n    .getOrCreate()\n# Mapeamento dos tipos de táxi",
+        "detail": "trusted.cleaning",
+        "documentation": {}
+    },
+    {
+        "label": "jars_path",
+        "kind": 5,
+        "importPath": "trusted.cleaning",
+        "description": "trusted.cleaning",
+        "peekOfCode": "jars_path = f\"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar\"\n# Inicializa Spark\nspark = SparkSession.builder \\\n    .appName(\"NYC Taxi Data Processing\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.jars\", jars_path) \\\n    .getOrCreate()\n# Mapeamento dos tipos de táxi\nTAXI_TYPES = {",
+        "detail": "trusted.cleaning",
+        "documentation": {}
+    },
+    {
+        "label": "spark",
+        "kind": 5,
+        "importPath": "trusted.cleaning",
+        "description": "trusted.cleaning",
+        "peekOfCode": "spark = SparkSession.builder \\\n    .appName(\"NYC Taxi Data Processing\") \\\n    .config(\"spark.hadoop.fs.s3a.impl\", \"org.apache.hadoop.fs.s3a.S3AFileSystem\") \\\n    .config(\"spark.hadoop.fs.s3a.aws.credentials.provider\", \"com.amazonaws.auth.DefaultAWSCredentialsProviderChain\") \\\n    .config(\"spark.jars\", jars_path) \\\n    .getOrCreate()\n# Mapeamento dos tipos de táxi\nTAXI_TYPES = {\n    'fhv_tripdata': 'forHireVehicle',\n    'green_tripdata': 'greenTaxi',",
+        "detail": "trusted.cleaning",
+        "documentation": {}
+    },
+    {
+        "label": "TAXI_TYPES",
+        "kind": 5,
+        "importPath": "trusted.cleaning",
+        "description": "trusted.cleaning",
+        "peekOfCode": "TAXI_TYPES = {\n    'fhv_tripdata': 'forHireVehicle',\n    'green_tripdata': 'greenTaxi',\n    'yellow_tripdata': 'yellowTaxi',\n    'fhvhv_tripdata': 'highVolumeForHire',\n}\n# Cria função para aplicar validações\ndef apply_cleaning_rules(df, taxi_type):\n    problems = []\n    if taxi_type in ['yellowTaxi', 'greenTaxi']:",
+        "detail": "trusted.cleaning",
+        "documentation": {}
+    },
+    {
+        "label": "s3",
+        "kind": 5,
+        "importPath": "trusted.cleaning",
+        "description": "trusted.cleaning",
+        "peekOfCode": "s3 = boto3.client(\"s3\")\ntoday = datetime.now()\ntoday_year = today.year\nmonths = ['0' + str(m) if m < 10 else str(m) for m in range(1, 13)]\nyears = list(range(2022, today_year + 1))\nfor year in years:\n    for month in months:\n        for taxi_type_filename, taxi_type_folder in TAXI_TYPES.items():\n            trusted_transform(\n                s3=s3,",
+        "detail": "trusted.cleaning",
+        "documentation": {}
+    },
+    {
+        "label": "today",
+        "kind": 5,
+        "importPath": "trusted.cleaning",
+        "description": "trusted.cleaning",
+        "peekOfCode": "today = datetime.now()\ntoday_year = today.year\nmonths = ['0' + str(m) if m < 10 else str(m) for m in range(1, 13)]\nyears = list(range(2022, today_year + 1))\nfor year in years:\n    for month in months:\n        for taxi_type_filename, taxi_type_folder in TAXI_TYPES.items():\n            trusted_transform(\n                s3=s3,\n                month=month,",
+        "detail": "trusted.cleaning",
+        "documentation": {}
+    },
+    {
+        "label": "today_year",
+        "kind": 5,
+        "importPath": "trusted.cleaning",
+        "description": "trusted.cleaning",
+        "peekOfCode": "today_year = today.year\nmonths = ['0' + str(m) if m < 10 else str(m) for m in range(1, 13)]\nyears = list(range(2022, today_year + 1))\nfor year in years:\n    for month in months:\n        for taxi_type_filename, taxi_type_folder in TAXI_TYPES.items():\n            trusted_transform(\n                s3=s3,\n                month=month,\n                year=year,",
+        "detail": "trusted.cleaning",
+        "documentation": {}
+    },
+    {
+        "label": "months",
+        "kind": 5,
+        "importPath": "trusted.cleaning",
+        "description": "trusted.cleaning",
+        "peekOfCode": "months = ['0' + str(m) if m < 10 else str(m) for m in range(1, 13)]\nyears = list(range(2022, today_year + 1))\nfor year in years:\n    for month in months:\n        for taxi_type_filename, taxi_type_folder in TAXI_TYPES.items():\n            trusted_transform(\n                s3=s3,\n                month=month,\n                year=year,\n                taxi_type_folder=taxi_type_folder,",
+        "detail": "trusted.cleaning",
+        "documentation": {}
+    },
+    {
+        "label": "years",
+        "kind": 5,
+        "importPath": "trusted.cleaning",
+        "description": "trusted.cleaning",
+        "peekOfCode": "years = list(range(2022, today_year + 1))\nfor year in years:\n    for month in months:\n        for taxi_type_filename, taxi_type_folder in TAXI_TYPES.items():\n            trusted_transform(\n                s3=s3,\n                month=month,\n                year=year,\n                taxi_type_folder=taxi_type_folder,\n                taxi_type_filename=taxi_type_filename",
+        "detail": "trusted.cleaning",
+        "documentation": {}
+    },
+    {
+        "label": "trusted_transform",
+        "kind": 2,
+        "importPath": "trusted.s3_trusted_script",
+        "description": "trusted.s3_trusted_script",
+        "peekOfCode": "def trusted_transform(s3, month, year, taxi_type_folder, taxi_type_filename):\n    filename = f\"{taxi_type_filename}_{year}-{month}.parquet\"\n    path_filename = f\"{taxi_type_folder}/{year}/{filename}\"\n    bucket = \"mba-nyc-dataset-f\"\n    source_key = f\"raw/{path_filename}\"\n    destination_key = f\"trusted/{path_filename}\"\n    copy_source = {\"Bucket\":bucket, \"Key\":source_key}\n    try:\n        s3.copy_object(CopySource=copy_source, Bucket=bucket, Key=destination_key)\n        print(f'Arquivo {filename} trasnferido com sucesso para a pasta {taxi_type_folder}')",
+        "detail": "trusted.s3_trusted_script",
+        "documentation": {}
+    },
+    {
+        "label": "taxi_types",
+        "kind": 5,
+        "importPath": "trusted.s3_trusted_script",
+        "description": "trusted.s3_trusted_script",
+        "peekOfCode": "taxi_types = {\n    'fhv_tripdata': 'forHireVehicle',\n    'green_tripdata': 'greenTaxi',\n    'yellow_tripdata': 'yellowTaxi',\n    'fhvhv_tripdata': 'highVolumeForHire',\n}\ntoday = datetime.datetime.now()\ntoday_year = today.year\ntoday_month = today.month\nyears = [year for year in range(2022, today_year+1)]",
+        "detail": "trusted.s3_trusted_script",
+        "documentation": {}
+    },
+    {
+        "label": "today",
+        "kind": 5,
+        "importPath": "trusted.s3_trusted_script",
+        "description": "trusted.s3_trusted_script",
+        "peekOfCode": "today = datetime.datetime.now()\ntoday_year = today.year\ntoday_month = today.month\nyears = [year for year in range(2022, today_year+1)]\nmonths = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]\ns3 = boto3.client(\"s3\")\nfor year in years:\n    for month in months:\n        for taxi_type in taxi_types:\n            taxi_type_folder = taxi_types.get(taxi_type)",
+        "detail": "trusted.s3_trusted_script",
+        "documentation": {}
+    },
+    {
+        "label": "today_year",
+        "kind": 5,
+        "importPath": "trusted.s3_trusted_script",
+        "description": "trusted.s3_trusted_script",
+        "peekOfCode": "today_year = today.year\ntoday_month = today.month\nyears = [year for year in range(2022, today_year+1)]\nmonths = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]\ns3 = boto3.client(\"s3\")\nfor year in years:\n    for month in months:\n        for taxi_type in taxi_types:\n            taxi_type_folder = taxi_types.get(taxi_type)\n            taxi_type_filename = taxi_type",
+        "detail": "trusted.s3_trusted_script",
+        "documentation": {}
+    },
+    {
+        "label": "today_month",
+        "kind": 5,
+        "importPath": "trusted.s3_trusted_script",
+        "description": "trusted.s3_trusted_script",
+        "peekOfCode": "today_month = today.month\nyears = [year for year in range(2022, today_year+1)]\nmonths = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]\ns3 = boto3.client(\"s3\")\nfor year in years:\n    for month in months:\n        for taxi_type in taxi_types:\n            taxi_type_folder = taxi_types.get(taxi_type)\n            taxi_type_filename = taxi_type\n            # Calling function to load",
+        "detail": "trusted.s3_trusted_script",
+        "documentation": {}
+    },
+    {
+        "label": "years",
+        "kind": 5,
+        "importPath": "trusted.s3_trusted_script",
+        "description": "trusted.s3_trusted_script",
+        "peekOfCode": "years = [year for year in range(2022, today_year+1)]\nmonths = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]\ns3 = boto3.client(\"s3\")\nfor year in years:\n    for month in months:\n        for taxi_type in taxi_types:\n            taxi_type_folder = taxi_types.get(taxi_type)\n            taxi_type_filename = taxi_type\n            # Calling function to load\n            trusted_transform(",
+        "detail": "trusted.s3_trusted_script",
+        "documentation": {}
+    },
+    {
+        "label": "months",
+        "kind": 5,
+        "importPath": "trusted.s3_trusted_script",
+        "description": "trusted.s3_trusted_script",
+        "peekOfCode": "months = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]\ns3 = boto3.client(\"s3\")\nfor year in years:\n    for month in months:\n        for taxi_type in taxi_types:\n            taxi_type_folder = taxi_types.get(taxi_type)\n            taxi_type_filename = taxi_type\n            # Calling function to load\n            trusted_transform(\n                s3=s3,",
+        "detail": "trusted.s3_trusted_script",
+        "documentation": {}
+    },
+    {
+        "label": "s3",
+        "kind": 5,
+        "importPath": "trusted.s3_trusted_script",
+        "description": "trusted.s3_trusted_script",
+        "peekOfCode": "s3 = boto3.client(\"s3\")\nfor year in years:\n    for month in months:\n        for taxi_type in taxi_types:\n            taxi_type_folder = taxi_types.get(taxi_type)\n            taxi_type_filename = taxi_type\n            # Calling function to load\n            trusted_transform(\n                s3=s3,\n                month=month,",
+        "detail": "trusted.s3_trusted_script",
+        "documentation": {}
+    }
+]
