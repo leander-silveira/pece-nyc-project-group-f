@@ -32,6 +32,7 @@ aws emr create-cluster \
   --region us-east-1
 ```
 
+![image](https://github.com/user-attachments/assets/69b88428-a57c-47ce-a352-ff816deabfcb)
 
 ![image](https://github.com/user-attachments/assets/2b2b7229-cec8-4ad8-8bba-1b4346404366)
 
