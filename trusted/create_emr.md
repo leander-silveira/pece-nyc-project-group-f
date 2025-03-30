@@ -53,19 +53,5 @@ aws emr create-cluster \
 ![image](https://github.com/user-attachments/assets/775fe085-1c51-4f67-9cdb-faf11e738909)
 
 
-Obter o DNS público da instância mestre
-```aws emr describe-cluster --cluster-id j-2YHNZ217IHWV8 --query 'Cluster.MasterPublicDnsName' --output text```
 
-
-<img width="634" alt="image" src="https://github.com/user-attachments/assets/58c0a5fb-3235-4f0a-8a43-b723584b0294" />
-
-Criar túnel para o Jupyter Notebook
-```ssh -i emr-keypair.pem -N -L 8888:localhost:8888 hadoop@ec2-54-164-19-230.compute-1.amazonaws.com```
-
-
-<img width="577" alt="image" src="https://github.com/user-attachments/assets/0bbe3cf5-d682-492e-8810-1c0b2507fee4" />
-
-Acessar:
-
-```http://localhost:8888```
 
