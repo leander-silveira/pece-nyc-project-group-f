@@ -8,18 +8,15 @@ url = 'https://www.nyc.gov/site/tlc/about/tlc-trip-record-data.page'
 response = requests.get(url)
 
 s3 = boto3.client("s3")
-S3_BUCKET = "mba-nyc-dataset-f"
+S3_BUCKET = "mba-nyc-dataset"
 S3_PREFIX = "raw"
-
-year_today = datetime.datetime.now().year
 
 if response.status_code == 200:
     soup = BeautifulSoup(response.content, 'html.parser')
     links = soup.find_all('a', href=True)
 
-    years = [year for year in range(year_today, year_today+1)]
+    years = [year for year in range(2022, 2025)]
     months = ['0' + str(month) if month < 10 else str(month) for month in range(1, 13)]
-    
     
     taxi_types = {
         'fhv_tripdata': 'forHireVehicle',
