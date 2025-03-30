@@ -19,20 +19,21 @@ Pegar chave:
 Cria EMR:
 ```
 aws emr create-cluster \
-  --name "EMR PySpark" \
+  --name "EMR Trusted Layer Transform" \
   --release-label emr-6.10.0 \
-  --applications Name=JupyterEnterpriseGateway Name=Spark \
+  --applications Name=Spark \
   --ec2-attributes KeyName=emr-keypair \
   --instance-type m5.xlarge \
   --instance-count 3 \
   --use-default-roles \
   --log-uri s3://mba-nyc-dataset/emr/logs/ \
-  --bootstrap-actions Path="s3://aws-bigdata-blog/artifacts/aws-blog-emr-jupyter/install-jupyter-emr6.sh" \
-  --configurations '[{"Classification":"spark","Properties":{"maximizeResourceAllocation":"true"}}]' \
+  --steps Type=Spark,Name="Trusted Transform",ActionOnFailure=CONTINUE,Args=[--deploy-mode,cluster,--master,yarn,s3://mba-nyc-dataset/scripts/trusted_transform.py] \
+  --auto-terminate \
   --region us-east-1
 ```
 
-<img width="618" alt="image" src="https://github.com/user-attachments/assets/0cf6316d-4b46-41fc-a9cd-c15105550ecc" />
+
+![image](https://github.com/user-attachments/assets/2b2b7229-cec8-4ad8-8bba-1b4346404366)
 
 <img width="1416" alt="image" src="https://github.com/user-attachments/assets/2251afed-10c2-4fb7-8009-8a943a139c05" />
 
