@@ -25,8 +25,7 @@ TAXI_TYPES = {
     'fhvhv_tripdata': 'highVolumeForHire',
 }
 
-# Cria função para aplicar validações
-
+# Função para aplicar validações de limpeza
 def apply_cleaning_rules(df, taxi_type):
     print(f"Aplicando regras de limpeza para tipo: {taxi_type}")
     df = df.withColumn("has_problem", lit(False))
@@ -62,8 +61,7 @@ def apply_cleaning_rules(df, taxi_type):
     return df
 
 # Função principal de transformação
-
-def trusted_transform(s3, month, year, taxi_type_folder, taxi_type_filename):
+def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
     filename = f"{taxi_type_filename}_{year}-{month}.parquet"
     path_filename = f"{taxi_type_folder}/{year}/{filename}"
     bucket = "mba-nyc-dataset"
@@ -73,27 +71,22 @@ def trusted_transform(s3, month, year, taxi_type_folder, taxi_type_filename):
     print(f"Iniciando processamento do arquivo: {filename}")
     try:
         df = spark.read.parquet(f"s3a://{bucket}/{source_key}")
-        print(f"Arquivo carregado com sucesso: {filename}, linhas: {df.count()}")
+        print(f"Arquivo carregado com sucesso: {filename} | Total de linhas: {df.count()}")
         df_cleaned = apply_cleaning_rules(df, taxi_type_folder)
         df_cleaned.write.mode("overwrite").parquet(f"s3a://{bucket}/{destination_key}")
-        print(f"Arquivo {filename} processado com sucesso e salvo em: trusted/{path_filename}\n")
+        print(f"✅ Arquivo salvo com sucesso em: trusted/{path_filename}")
     except Exception as e:
-        print(f"❌ Falha ao processar o arquivo {filename}: {e}")
+        print(f"❌ Falha ao processar o arquivo {filename}: {str(e)}")
 
-# Execução do loop principal
-
-s3 = boto3.client("s3")
-today = datetime.now()
-today_year = today.year
+# Loop principal (anos fixos de 2022 a 2024)
 months = ['0' + str(m) if m < 10 else str(m) for m in range(1, 13)]
-years = list(range(2022, today_year + 1))
+years = [2022, 2023, 2024]
 
 for year in years:
     for month in months:
         for taxi_type_filename, taxi_type_folder in TAXI_TYPES.items():
             print(f"\n>>> Processando: {taxi_type_filename} | Ano: {year} | Mês: {month}")
             trusted_transform(
-                s3=s3,
                 month=month,
                 year=year,
                 taxi_type_folder=taxi_type_folder,
