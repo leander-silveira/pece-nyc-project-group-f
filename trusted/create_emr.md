@@ -50,7 +50,7 @@ aws emr create-cluster \
 
 ![image](https://github.com/user-attachments/assets/2b2b7229-cec8-4ad8-8bba-1b4346404366)
 
-<img width="1416" alt="image" src="https://github.com/user-attachments/assets/2251afed-10c2-4fb7-8009-8a943a139c05" />
+![image](https://github.com/user-attachments/assets/775fe085-1c51-4f67-9cdb-faf11e738909)
 
 
 Obter o DNS público da instância mestre
