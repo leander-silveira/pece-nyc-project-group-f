@@ -55,14 +55,17 @@ def apply_cleaning_rules(df, taxi_type):
 # Função principal de transformação
 def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
     filename = f"{taxi_type_filename}_{year}-{month}.parquet"
-    source_path = f"s3://mba-nyc-dataset/raw/{taxi_type_folder}/{year}/{filename}"
-    destination_path = f"s3://mba-nyc-dataset/trusted/{taxi_type_folder}/{year}/{month}/"
+    path_filename = f"{taxi_type_folder}/{year}/{filename}"
+    bucket = "mba-nyc-dataset"
+    source_key = f"raw/{path_filename}"
+    destination_key = f"trusted/{taxi_type_folder}/{year}/{month}/{filename}"
 
+    
     print(f"Iniciando processamento do arquivo: {filename}")
     try:
         start_time = time.time()
 
-        df = spark.read.parquet(source_path).cache()
+        df = spark.read.parquet(f"s3a://{bucket}/{source_key}").cache()
         total_rows = df.count()
         print(f"Arquivo carregado com sucesso: {filename} | Total de linhas: {total_rows}")
 
@@ -72,15 +75,14 @@ def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
             .repartition(4) \
             .write \
             .mode("overwrite") \
-            .parquet(destination_path)
+            .parquet(f"s3a://{bucket}/{destination_key}")
 
-        print(f"✅ Arquivo salvo com sucesso em: {destination_path}")
+        print(f"✅ Arquivo salvo com sucesso em: trusted/{taxi_type_folder}/{year}/{month}/{filename}")
         print(f"Tempo de execução: {round(time.time() - start_time, 2)} segundos")
 
     except Exception as e:
         print(f"❌ Falha ao processar o arquivo {filename}: {str(e)}")
 
-# Execução principal
 months = [f"{m:02d}" for m in range(1, 13)]
 years = [2022, 2023, 2024]
 
