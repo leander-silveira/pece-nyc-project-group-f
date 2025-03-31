@@ -1,7 +1,5 @@
 import os
 import time
-import boto3
-from datetime import datetime
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, lit, concat_ws
 
@@ -16,7 +14,7 @@ spark = SparkSession.builder \
     .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
     .config("spark.jars", jars_path) \
     .config("spark.sql.debug.maxToStringFields", "100") \
-    .config("spark.executor.memory", "4g") \ # Ajuste a memória do executor
+    .config("spark.executor.memory", "4g") \
     .getOrCreate()
 
 # Mapeamento dos tipos de táxi
@@ -68,7 +66,7 @@ def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
     path_filename = f"{taxi_type_folder}/{year}/{filename}"
     bucket = "mba-nyc-dataset"
     source_key = f"raw/{path_filename}"
-    destination_key = f"trusted/{path_filename}"
+    destination_key = f"trusted/{taxi_type_folder}/{year}/{month}/{filename}" # Alteração aqui
 
     print(f"Iniciando processamento do arquivo: {filename}")
     try:
@@ -86,7 +84,7 @@ def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
             .mode("overwrite") \
             .parquet(f"s3a://{bucket}/{destination_key}")
 
-        print(f"✅ Arquivo salvo com sucesso em: trusted/{path_filename}")
+        print(f"✅ Arquivo salvo com sucesso em: trusted/{taxi_type_folder}/{year}/{month}/{filename}") # alteração aqui
         print(f"Tempo de execução: {round(time.time() - start_time, 2)} segundos")
 
     except Exception as e:
