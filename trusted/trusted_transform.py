@@ -57,7 +57,7 @@ def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
     filename = f"{taxi_type_filename}_{year}-{month}.parquet"
     path_filename = f"{taxi_type_folder}/{year}/{month}/{filename}"
     bucket = "mba-nyc-dataset"
-    source_key = f"raw/{path_filename}"
+    source_key = f"raw/{taxi_type_folder}/{year}/{filename}"
     destination_key = f"trusted/{path_filename}"
 
     print(f"Iniciando processamento do arquivo: {filename}")
