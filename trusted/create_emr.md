@@ -39,6 +39,7 @@ aws emr create-cluster \
 ![image](https://github.com/user-attachments/assets/4b1329b3-baf5-43d4-9ad4-f3542a037f3b)
 ![image](https://github.com/user-attachments/assets/dbf60f45-74a3-4ce4-896e-5a084fa39aa8)
 
+![image](https://github.com/user-attachments/assets/872a2a31-31d6-430a-a9a2-4c5711824d94)
 
 
 Criar um step manualmente
@@ -46,13 +47,15 @@ Criar um step manualmente
 ```
 aws emr add-steps \
   --region us-east-1 \
-  --cluster-id j-3J5BXW4H7BLGY \
-  --steps '[
+  --cluster-id j-263R8D2GGP9I3 \
+  --steps '[ 
     {
-      "Type": "Spark",
-      "Name": "NYC Trusted Transform",
+      "Name": "NYC Trusted Transform - Atualizado",
       "ActionOnFailure": "CONTINUE",
+      "Type": "CUSTOM_JAR",
+      "Jar": "command-runner.jar",
       "Args": [
+        "spark-submit",
         "--deploy-mode", "cluster",
         "--master", "yarn",
         "--conf", "spark.pyspark.python=python3",
@@ -60,6 +63,7 @@ aws emr add-steps \
       ]
     }
   ]'
-```
 
-![image](https://github.com/user-attachments/assets/872a2a31-31d6-430a-a9a2-4c5711824d94)
+```
+![image](https://github.com/user-attachments/assets/291f7d4a-ff7a-4161-99e9-bb183d06fa04)
+
