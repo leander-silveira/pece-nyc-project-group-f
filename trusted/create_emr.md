@@ -59,7 +59,7 @@ aws emr add-steps \
         "--deploy-mode", "cluster",
         "--master", "yarn",
         "--conf", "spark.pyspark.python=python3",
-        "s3://mba-nyc-dataset/emr/scripts/trusted_transform.py"
+        "s3://mba-nyc-dataset/emr/scripts/load_to_trusted.py"
       ]
     }
   ]'
