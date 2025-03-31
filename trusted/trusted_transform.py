@@ -55,16 +55,14 @@ def apply_cleaning_rules(df, taxi_type):
 # Função principal de transformação
 def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
     filename = f"{taxi_type_filename}_{year}-{month}.parquet"
-    path_filename = f"{taxi_type_folder}/{year}/{month}/{filename}"
-    bucket = "mba-nyc-dataset"
-    source_key = f"raw/{taxi_type_folder}/{year}/{filename}"
-    destination_key = f"trusted/{path_filename}"
+    source_path = f"s3://mba-nyc-dataset/raw/{taxi_type_folder}/{year}/{filename}"
+    destination_path = f"s3://mba-nyc-dataset/trusted/{taxi_type_folder}/{year}/{month}/"
 
     print(f"Iniciando processamento do arquivo: {filename}")
     try:
         start_time = time.time()
 
-        df = spark.read.parquet(f"s3://{bucket}/{source_key}").cache()
+        df = spark.read.parquet(source_path).cache()
         total_rows = df.count()
         print(f"Arquivo carregado com sucesso: {filename} | Total de linhas: {total_rows}")
 
@@ -74,9 +72,9 @@ def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
             .repartition(4) \
             .write \
             .mode("overwrite") \
-            .parquet(f"s3://{bucket}/{destination_key}")
+            .parquet(destination_path)
 
-        print(f"✅ Arquivo salvo com sucesso em: trusted/{path_filename}")
+        print(f"✅ Arquivo salvo com sucesso em: {destination_path}")
         print(f"Tempo de execução: {round(time.time() - start_time, 2)} segundos")
 
     except Exception as e:
