@@ -19,28 +19,7 @@ Pegar chave:
 
 Cria EMR:
 
-Tentativa 1
 
-```
-aws emr create-cluster \
-  --name "EMR Trusted Transform" \
-  --release-label emr-6.10.0 \
-  --applications Name=Spark \
-  --ec2-attributes KeyName=emr-keypair \
-  --instance-type m5.xlarge \
-  --instance-count 3 \
-  --use-default-roles \
-  --log-uri s3://mba-nyc-dataset/emr/logs/ \
-  --steps Type=Spark,Name="Trusted Transform",ActionOnFailure=CONTINUE,Args=[--deploy-mode,cluster,--master,yarn,s3://mba-nyc-dataset/emr/scripts/trusted_transform.py] \
-  --region us-east-1
- ```
-![image](https://github.com/user-attachments/assets/ceeb0427-f4f5-4d46-9e22-aafd26affde1)
-
-
-![image](https://github.com/user-attachments/assets/e8be5147-5a9d-4cdc-aae3-0caf4eeb2bb4)
-
-
-Tentativa 2:
 
 ```
 aws emr create-cluster \
@@ -58,81 +37,11 @@ aws emr create-cluster \
 ```
 
 ![image](https://github.com/user-attachments/assets/4b1329b3-baf5-43d4-9ad4-f3542a037f3b)
+![image](https://github.com/user-attachments/assets/dbf60f45-74a3-4ce4-896e-5a084fa39aa8)
+
 
 
 Criar um step manualmente
-Tentativa 1:
-```
-aws emr add-steps \
-  --cluster-id j-1QE4KP239A1VO \
-  --steps Type=Spark,Name="Trusted Transform",ActionOnFailure=CONTINUE,Args=[--deploy-mode,cluster,--master,yarn,s3://mba-nyc-dataset/emr/scripts/trusted_transform.py] \
-  --region us-east-1
-```
-Tentativa 2:
-```
-aws emr add-steps \
-  --cluster-id j-3J5BXW4H7BLGY \
-  --steps '[{
-    "Type":"Spark",
-    "Name":"NYC Trusted Transform",
-    "ActionOnFailure":"CONTINUE",
-    "Args":["spark-submit","--deploy-mode","cluster","--master","yarn","--conf","spark.pyspark.python=python3","s3://mba-nyc-dataset/emr/scripts/trusted_transform.py"]
-  }]' \
-  --region us-east-1
-```
-
-Tentativa 3:
-
-```
-aws emr add-steps \
-  --cluster-id j-3J5BXW4H7BLGY \
-  --steps Type=Spark,Name="NYC Trusted Transform",ActionOnFailure=CONTINUE,Args=["--deploy-mode","cluster","--master","yarn","--conf","spark.pyspark.python=python3","s3://mba-nyc-dataset/emr/scripts/trusted_transform.py"] \
-  --region us-east-1
-```
-![image](https://github.com/user-attachments/assets/c87db34f-5964-4b0f-8b75-67fb3a6b3f26)
-
-![image](https://github.com/user-attachments/assets/defa0c06-8eda-42ea-8b40-ff68c982d69a)
-![image](https://github.com/user-attachments/assets/2eea6a83-36ed-4508-9d61-c96a3c40ee53)
-
-Tentativa 4:
-```
-aws emr add-steps \
-  --region us-east-1 \
-  --cluster-id j-3J5BXW4H7BLGY \
-  --steps Type=Spark,Name="NYC Trusted Transform",ActionOnFailure=CONTINUE,Args=[\
-"spark-submit",\
-"--deploy-mode","cluster",\
-"--master","yarn",\
-"s3://mba-nyc-dataset/emr/scripts/trusted_transform.py"\
-]
-```
-
-
-![image](https://github.com/user-attachments/assets/83458967-3bd0-4a5d-9fff-6dcc48c22c06)
-
-Tentativa 5:
-```
-aws emr add-steps \
-  --region us-east-1 \
-  --cluster-id j-3J5BXW4H7BLGY \
-  --steps '[
-    {
-      "Type": "Spark",
-      "Name": "NYC Trusted Transform",
-      "ActionOnFailure": "CONTINUE",
-      "Args": [
-        "spark-submit",
-        "--deploy-mode", "cluster",
-        "--master", "yarn",
-        "s3://mba-nyc-dataset/emr/scripts/trusted_transform.py"
-      ]
-    }
-  ]'
-```
-![image](https://github.com/user-attachments/assets/5205d6c1-77dd-40ad-8145-7a3cb6884a24)
-
-
-Tentativa 6:
 
 ```
 aws emr add-steps \
@@ -152,4 +61,5 @@ aws emr add-steps \
     }
   ]'
 ```
-![image](https://github.com/user-attachments/assets/b034334a-89a6-4e30-a90e-3f12a1df2553)
+
+![image](https://github.com/user-attachments/assets/872a2a31-31d6-430a-a9a2-4c5711824d94)
