@@ -52,15 +52,14 @@ def apply_cleaning_rules(df, taxi_type):
 
     return df
 
-# Função principal de transformação
 def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
     filename = f"{taxi_type_filename}_{year}-{month}.parquet"
     path_filename = f"{taxi_type_folder}/{year}/{filename}"
     bucket = "mba-nyc-dataset"
     source_key = f"raw/{path_filename}"
-    destination_key = f"trusted/{taxi_type_folder}/{year}/{month}/{filename}"
 
-    
+    destination_key = f"trusted/{taxi_type_folder}/{year}/{month}/"
+
     print(f"Iniciando processamento do arquivo: {filename}")
     try:
         start_time = time.time()
@@ -77,7 +76,7 @@ def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
             .mode("overwrite") \
             .parquet(f"s3a://{bucket}/{destination_key}")
 
-        print(f"✅ Arquivo salvo com sucesso em: trusted/{taxi_type_folder}/{year}/{month}/{filename}")
+        print(f"✅ Arquivo salvo com sucesso em: {destination_key}")
         print(f"Tempo de execução: {round(time.time() - start_time, 2)} segundos")
 
     except Exception as e:
