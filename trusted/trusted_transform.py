@@ -1,4 +1,3 @@
-from datetime import datetime
 import time
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, lit, concat_ws
@@ -7,7 +6,10 @@ from pyspark.sql.functions import col, when, lit, concat_ws
 spark = SparkSession.builder \
     .appName("NYC Taxi Trusted Transform") \
     .config("spark.sql.debug.maxToStringFields", "100") \
+    .config("spark.sql.shuffle.partitions", "8") \
     .getOrCreate()
+
+spark.sparkContext.setLogLevel("WARN")
 
 # Mapeamento dos tipos de táxi
 TAXI_TYPES = {
@@ -19,7 +21,7 @@ TAXI_TYPES = {
 
 # Função para aplicar regras de limpeza
 def apply_cleaning_rules(df, taxi_type):
-    print(f"Aplicando regras de limpeza para tipo: {taxi_type}")
+    print(f"✔ Aplicando regras de limpeza para tipo: {taxi_type}")
     df = df.withColumn("has_problem", lit(False))
     df = df.withColumn("problem_description", lit(""))
 
@@ -52,43 +54,43 @@ def apply_cleaning_rules(df, taxi_type):
 
     return df
 
+# Função principal de transformação
 def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
     filename = f"{taxi_type_filename}_{year}-{month}.parquet"
-    path_filename = f"{taxi_type_folder}/{year}/{filename}"
-    bucket = "mba-nyc-dataset"
-    source_key = f"raw/{path_filename}"
+    source_path = f"s3a://mba-nyc-dataset/raw/{taxi_type_folder}/{year}/{filename}"
+    destination_path = f"s3a://mba-nyc-dataset/trusted/{taxi_type_folder}/"
 
-    destination_key = f"trusted/{taxi_type_folder}/{year}/{month}/"
-
-    print(f"Iniciando processamento do arquivo: {filename}")
+    print(f"\n🔄 Processando arquivo: {filename}")
     try:
-        start_time = time.time()
+        start = time.time()
+        df = spark.read.parquet(source_path)
 
-        df = spark.read.parquet(f"s3a://{bucket}/{source_key}").cache()
-        total_rows = df.count()
-        print(f"Arquivo carregado com sucesso: {filename} | Total de linhas: {total_rows}")
-
+        print(f"📥 Linhas lidas: {df.count()}")
         df_cleaned = apply_cleaning_rules(df, taxi_type_folder)
 
+        # Salva com partição por ano/mês
         df_cleaned \
-            .repartition(4) \
+            .withColumn("year", lit(int(year))) \
+            .withColumn("month", lit(int(month))) \
+            .coalesce(4) \
             .write \
             .mode("overwrite") \
-            .parquet(f"s3a://{bucket}/{destination_key}")
+            .partitionBy("year", "month") \
+            .parquet(destination_path)
 
-        print(f"✅ Arquivo salvo com sucesso em: {destination_key}")
-        print(f"Tempo de execução: {round(time.time() - start_time, 2)} segundos")
+        print(f"✅ Salvo em: {destination_path} (particionado por year/month)")
+        print(f"⏱️ Tempo de execução: {round(time.time() - start, 2)}s")
 
     except Exception as e:
-        print(f"❌ Falha ao processar o arquivo {filename}: {str(e)}")
+        print(f"❌ Erro ao processar {filename}: {e}")
 
+# Loop principal
 months = [f"{m:02d}" for m in range(1, 13)]
 years = [2022, 2023, 2024]
 
 for year in years:
     for month in months:
         for taxi_type_filename, taxi_type_folder in TAXI_TYPES.items():
-            print(f"\n>>> Processando: {taxi_type_filename} | Ano: {year} | Mês: {month}")
             trusted_transform(
                 month=month,
                 year=year,
