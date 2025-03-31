@@ -55,7 +55,7 @@ def apply_cleaning_rules(df, taxi_type):
 # Função principal de transformação
 def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
     filename = f"{taxi_type_filename}_{year}-{month}.parquet"
-    path_filename = f"{taxi_type_folder}/{year}/{filename}"
+    path_filename = f"{taxi_type_folder}/{year}/{month}/{filename}"
     bucket = "mba-nyc-dataset"
     source_key = f"raw/{path_filename}"
     destination_key = f"trusted/{path_filename}"
