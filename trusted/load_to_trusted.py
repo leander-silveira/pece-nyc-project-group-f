@@ -5,6 +5,7 @@ from pyspark.sql.functions import col, when, lit, concat_ws
 # Inicializa Spark no EMR
 spark = SparkSession.builder \
     .appName("NYC Taxi Trusted Transform") \
+    .config("spark.sql.sources.partitionOverwriteMode", "dynamic") \
     .config("spark.sql.debug.maxToStringFields", "100") \
     .config("spark.sql.shuffle.partitions", "8") \
     .getOrCreate()
