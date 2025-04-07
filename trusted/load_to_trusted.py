@@ -2,7 +2,7 @@ import time
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, lit, concat_ws
 
-# Inicializa Spark no EMR
+# Inicializa Spark
 spark = SparkSession.builder \
     .appName("NYC Taxi Trusted Transform") \
     .config("spark.sql.sources.partitionOverwriteMode", "dynamic") \
@@ -20,40 +20,36 @@ TAXI_TYPES = {
     'fhvhv_tripdata': 'highVolumeForHire',
 }
 
-# Função para aplicar regras de limpeza
 def apply_cleaning_rules(df, taxi_type):
-    print(f"✔ Aplicando regras de limpeza para tipo: {taxi_type}")
-    df = df.withColumn("has_problem", lit(False))
-    df = df.withColumn("problem_description", lit(""))
+  print(f"Aplicando regras de limpeza para tipo: {taxi_type}")
+  df = df.withColumn("has_problem", lit(False))
+  df = df.withColumn("problem_description", lit(""))
 
-    if taxi_type in ['yellowTaxi', 'greenTaxi']:
-        pickup_col = 'tpep_pickup_datetime' if taxi_type == 'yellowTaxi' else 'lpep_pickup_datetime'
-        dropoff_col = 'tpep_dropoff_datetime' if taxi_type == 'yellowTaxi' else 'lpep_dropoff_datetime'
+  # Dimensões de qualidade para dataset de taxis verdes e amarelos
+  if taxi_type in ['yellowTaxi', 'greenTaxi']:
+    pickup_col = 'tpep_pickup_datetime' if taxi_type == 'yellowTaxi' else 'lpep_pickup_datetime'
+    dropoff_col = 'tpep_dropoff_datetime' if taxi_type == 'yellowTaxi' else 'lpep_dropoff_datetime'
 
-        df = df.withColumn("has_problem", when(col("passenger_count") <= 0, True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("passenger_count") <= 0, concat_ws(";", col("problem_description"), lit("passenger_count <= 0"))).otherwise(col("problem_description")))
+    # Verificação de valores inválidos
+    df = df.withColumn("passenger_count",when(col("passenger_count")<=0, lit(1)).otherwise(col("passenger_count")))
+    df = df.filter(df["trip_distance"] > 0).\
+          filter(df[dropoff_col] > df[pickup_col])
 
-        df = df.withColumn("has_problem", when(col("trip_distance") <= 0, True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("trip_distance") <= 0, concat_ws(";", col("problem_description"), lit("trip_distance <= 0"))).otherwise(col("problem_description")))
+    # Normalizar e validar localizações de embarque e desembarque
+    df = df.withColumn("has_problem", when((col("PULocationID") <= 0) | (col("DOLocationID") <= 0), True).otherwise(col("has_problem")))
+    df = df.withColumn("problem_description", when((col("PULocationID") <= 0) | (col("DOLocationID") <= 0), concat_ws(";", col("problem_description"), lit("invalid PULocationID or DOLocationID"))).otherwise(col("problem_description")))
 
-        df = df.withColumn("has_problem", when(col(dropoff_col) <= col(pickup_col), True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col(dropoff_col) <= col(pickup_col), concat_ws(";", col("problem_description"), lit("dropoff <= pickup"))).otherwise(col("problem_description")))
+  # Dimensões de qualidade para dataset de For Hire Vehicles
+  elif taxi_type == 'forHireVehicle':
+    df = df.filter(df["PUlocationID"].isNotNull() & df["DOlocationID"].isNotNull())
 
-    elif taxi_type == 'forHireVehicle':
-        df = df.withColumn("has_problem", when(col("PUlocationID").isNull() & col("DOlocationID").isNull(), True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("PUlocationID").isNull() & col("DOlocationID").isNull(), concat_ws(";", col("problem_description"), lit("PU and DO missing"))).otherwise(col("problem_description")))
+  # Dimensões de qualidade para dataset de For Hire Vehicles (High Volume)
+  elif taxi_type == 'highVolumeForHire':
+    df = df.filter(df["trip_miles"] > 0).\
+          filter(df["trip_time"] > 0).\
+          filter(df["dropoff_datetime"] > df["pickup_datetime"])
 
-    elif taxi_type == 'highVolumeForHire':
-        df = df.withColumn("has_problem", when(col("trip_miles") <= 0, True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("trip_miles") <= 0, concat_ws(";", col("problem_description"), lit("trip_miles <= 0"))).otherwise(col("problem_description")))
-
-        df = df.withColumn("has_problem", when(col("trip_time") <= 0, True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("trip_time") <= 0, concat_ws(";", col("problem_description"), lit("trip_time <= 0"))).otherwise(col("problem_description")))
-
-        df = df.withColumn("has_problem", when(col("dropoff_datetime") <= col("pickup_datetime"), True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("dropoff_datetime") <= col("pickup_datetime"), concat_ws(";", col("problem_description"), lit("dropoff <= pickup"))).otherwise(col("problem_description")))
-
-    return df
+  return df
 
 # Função principal de transformação
 def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
