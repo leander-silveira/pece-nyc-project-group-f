@@ -51,8 +51,7 @@ def apply_cleaning_rules(df, taxi_type):
 
   return df
 
-# Função principal de transformação
-def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
+def main(month, year, taxi_type_folder, taxi_type_filename):
     filename = f"{taxi_type_filename}_{year}-{month}.parquet"
     source_path = f"s3a://mba-nyc-dataset/raw/{taxi_type_folder}/{year}/{filename}"
     destination_path = f"s3a://mba-nyc-dataset/trusted/{taxi_type_folder}/"
@@ -88,7 +87,7 @@ years = [2022, 2023, 2024]
 for year in years:
     for month in months:
         for taxi_type_filename, taxi_type_folder in TAXI_TYPES.items():
-            trusted_transform(
+            main(
                 month=month,
                 year=year,
                 taxi_type_folder=taxi_type_folder,
