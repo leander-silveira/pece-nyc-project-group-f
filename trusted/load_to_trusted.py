@@ -61,7 +61,6 @@ def main(month, year, taxi_type_folder, taxi_type_filename):
         start = time.time()
         df = spark.read.parquet(source_path)
 
-        print(f"📥 Linhas lidas: {df.count()}")
         df_cleaned = apply_cleaning_rules(df, taxi_type_folder)
 
         # Salva com partição por ano/mês
@@ -73,6 +72,8 @@ def main(month, year, taxi_type_folder, taxi_type_filename):
             .mode("overwrite") \
             .partitionBy("year", "month") \
             .parquet(destination_path)
+        # coalesce(4) é usado para reduzir o número de partições do DataFrame antes de escrever os dados no S3. Ele controla quantos arquivos .parquet serão gerados por partição lógica (year e month).
+
 
         print(f"✅ Salvo em: {destination_path} (particionado por year/month)")
         print(f"⏱️ Tempo de execução: {round(time.time() - start, 2)}s")
