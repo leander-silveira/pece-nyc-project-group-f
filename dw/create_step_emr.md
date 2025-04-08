@@ -8,9 +8,12 @@ Args=[--deploy-mode,cluster,\
 s3://mba-nyc-dataset/emr/scripts/load_to_dw_and_rds.py]
 ```
 
---deploy-mode cluster: executa o código diretamente nos nós do EMR.
-
---master yarn: usa o gerenciador de cluster padrão do EMR (YARN).
-
-O caminho final aponta para seu script .py no S3.
 ![image](https://github.com/user-attachments/assets/6b8a4e23-f02d-4682-8c0c-fb524cc6726b)
+
+`--deploy-mode cluster`: roda o script diretamente no cluster EMR.
+
+`--master yarn`: usa o YARN como gerenciador de recursos.
+
+`--jars`: adiciona o conector JDBC necessário para escrever no RDS MySQL.
+
+`s3://.../load_to_dw_and_rds.py`: caminho script no S3.
