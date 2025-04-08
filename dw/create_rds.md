@@ -89,8 +89,23 @@ nyc-dw-mysql.coseekllgrql.us-east-1.rds.amazonaws.com
 
 ![image](https://github.com/user-attachments/assets/ed51b034-fa6a-4ad3-904a-d08d5c2b9fc2)
 
+6.Pegar usuário e senha
+Seção "Configurações":
+- Usuário mestre (Master username): admin
+- Senha: não aparece no console por segurança
 
-6. Instalar o JDBC do MySQL, e salvar no EMR e Cloud9
+6.1 Redefinir a senha:
+
+- Modificar
+- Configurações
+- Novo grupo de configurações
+- Nova senha mestre
+- Continuar
+- Modificar instância
+
+A alteração da senha não reinicia a instância
+
+7. Instalar o JDBC do MySQL, e salvar no EMR e Cloud9
 
 https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar
 
