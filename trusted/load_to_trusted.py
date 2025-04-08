@@ -1,6 +1,7 @@
 import time
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import col, when, lit, concat_ws
+from pyspark.sql.types import IntegerType, StringType, StructType, StructField
 
 # Inicializa Spark no EMR
 spark = SparkSession.builder \
@@ -20,38 +21,75 @@ TAXI_TYPES = {
     'fhvhv_tripdata': 'highVolumeForHire',
 }
 
+# Criar DataFrame de pagamento em PySpark
+schema_payment = StructType([
+    StructField("payment_type", IntegerType(), True),
+    StructField("payment_type_description", StringType(), True)
+])
+
+data_payment = [
+    (1, "Credit card"),
+    (2, "Cash"),
+    (3, "No charge"),
+    (4, "Dispute"),
+    (5, "Unknown"),
+    (6, "Voided trip")
+]
+
+df_dim_payment_type = spark.createDataFrame(data_payment, schema=schema_payment)
+
 # Função para aplicar regras de limpeza
 def apply_cleaning_rules(df, taxi_type):
     print(f"✔ Aplicando regras de limpeza para tipo: {taxi_type}")
     df = df.withColumn("has_problem", lit(False))
     df = df.withColumn("problem_description", lit(""))
+    miles_to_km = 1.60934
 
+    # Dimensões de qualidade para dataset de taxis verdes e amarelos
     if taxi_type in ['yellowTaxi', 'greenTaxi']:
         pickup_col = 'tpep_pickup_datetime' if taxi_type == 'yellowTaxi' else 'lpep_pickup_datetime'
         dropoff_col = 'tpep_dropoff_datetime' if taxi_type == 'yellowTaxi' else 'lpep_dropoff_datetime'
 
-        df = df.withColumn("has_problem", when(col("passenger_count") <= 0, True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("passenger_count") <= 0, concat_ws(";", col("problem_description"), lit("passenger_count <= 0"))).otherwise(col("problem_description")))
+        # Verificação de valores inválidos
+        df = df.withColumn("passenger_count",when(col("passenger_count")<=0, lit(1)).otherwise(col("passenger_count")))
 
-        df = df.withColumn("has_problem", when(col("trip_distance") <= 0, True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("trip_distance") <= 0, concat_ws(";", col("problem_description"), lit("trip_distance <= 0"))).otherwise(col("problem_description")))
+        # Filtra apenas linhas que contém distância de viagens maior ou igual  0; Dados em que desembarque é maior que embarque
+        df = df.filter(df["trip_distance"] > 0).\
+                filter(df[dropoff_col] > df[pickup_col])
 
-        df = df.withColumn("has_problem", when(col(dropoff_col) <= col(pickup_col), True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col(dropoff_col) <= col(pickup_col), concat_ws(";", col("problem_description"), lit("dropoff <= pickup"))).otherwise(col("problem_description")))
+        # Normalizar e validar localizações de embarque e desembarque
+        df = df.withColumn("has_problem", when((col("PULocationID") <= 0) | (col("DOLocationID") <= 0), True).otherwise(col("has_problem")))
+        df = df.withColumn("problem_description", when((col("PULocationID") <= 0) | (col("DOLocationID") <= 0), concat_ws(";", col("problem_description"), lit("invalid PULocationID or DOLocationID"))).otherwise(col("problem_description")))
 
+        # Transformando payment_type para número inteiro
+        df = df.withColumn("payment_type", col("payment_type").cast(IntegerType()))
+
+        # Adicionando descrição do payment_type
+        df = df.join(
+          df_dim_payment_type, on="payment_type", how="left"
+        )
+
+        # Adicionando coluna de distância em km
+        df = df.withColumn("trip_distance_km", col("trip_distance") * lit(miles_to_km))
+
+
+        ### Renomeando colunas
+        df = df.withColumnRenamed(pickup_col, "pickup_datetime")
+        df = df.withColumnRenamed(dropoff_col, "dropoff_datetime")
+
+    # Dimensões de qualidade para dataset de For Hire Vehicles
     elif taxi_type == 'forHireVehicle':
-        df = df.withColumn("has_problem", when(col("PUlocationID").isNull() & col("DOlocationID").isNull(), True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("PUlocationID").isNull() & col("DOlocationID").isNull(), concat_ws(";", col("problem_description"), lit("PU and DO missing"))).otherwise(col("problem_description")))
+        # Substitui nulo por 0 nos casos de corridas não compartilhadas
+        df = df.withColumn("SR_Flag", when(col("SR_Flag").isNull(), lit(0)).otherwise(col("SR_Flag")))
 
+    # Dimensões de qualidade para dataset de For Hire Vehicles (High Volume)
+      # Filtra viagens com distância, tempo maior que zero; filtra viagens que data e hora do desembarque seja maior que embarque
     elif taxi_type == 'highVolumeForHire':
-        df = df.withColumn("has_problem", when(col("trip_miles") <= 0, True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("trip_miles") <= 0, concat_ws(";", col("problem_description"), lit("trip_miles <= 0"))).otherwise(col("problem_description")))
-
-        df = df.withColumn("has_problem", when(col("trip_time") <= 0, True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("trip_time") <= 0, concat_ws(";", col("problem_description"), lit("trip_time <= 0"))).otherwise(col("problem_description")))
-
-        df = df.withColumn("has_problem", when(col("dropoff_datetime") <= col("pickup_datetime"), True).otherwise(col("has_problem")))
-        df = df.withColumn("problem_description", when(col("dropoff_datetime") <= col("pickup_datetime"), concat_ws(";", col("problem_description"), lit("dropoff <= pickup"))).otherwise(col("problem_description")))
+        # Adicionando coluna de distância em km
+        df = df.withColumn("trip_miles_km", col("trip_miles") * lit(miles_to_km))
+        df = df.filter(df["trip_miles"] > 0).\
+                filter(df["trip_time"] > 0).\
+                filter(df["dropoff_datetime"] > df["pickup_datetime"])
 
     return df
 
