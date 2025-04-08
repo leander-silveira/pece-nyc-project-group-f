@@ -13,4 +13,4 @@ s3://mba-nyc-dataset/emr/scripts/load_to_dw_and_rds.py]
 --master yarn: usa o gerenciador de cluster padrão do EMR (YARN).
 
 O caminho final aponta para seu script .py no S3.
-![image](https://github.com/user-attachments/assets/2378cd2e-cc2a-4906-a548-cac07f54d30b)
+![image](https://github.com/user-attachments/assets/6b8a4e23-f02d-4682-8c0c-fb524cc6726b)
