@@ -1,161 +1,114 @@
 import os
-from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, lit, year, month, dayofmonth, hour, dayofweek, when, to_date, date_format, monotonically_increasing_id
-import calendar
+from pyspark.sql import SparkSession, DataFrame
+from pyspark.sql.functions import lit
+from typing import List, Tuple
 
-# Caminho para JARs no Cloud9
-home_dir = os.environ["HOME"]
-jars_path = f"{home_dir}/spark_jars/hadoop-aws-3.3.1.jar,{home_dir}/spark_jars/aws-java-sdk-bundle-1.11.901.jar"
+def create_spark_session(app_name: str) -> SparkSession:
+    """
+    Cria e configura uma SparkSession para leitura de dados no S3.
+    """
+    jars_path = "/home/ec2-user/spark_jars/hadoop-aws-3.3.1.jar,/home/ec2-user/spark_jars/aws-java-sdk-bundle-1.11.901.jar"
 
-# Inicializa Spark
-spark = SparkSession.builder \
-    .appName("NYC Taxi - DW") \
-    .config("spark.sql.sources.partitionOverwriteMode", "dynamic") \
-    .config("spark.sql.debug.maxToStringFields", "100") \
-    .config("spark.sql.shuffle.partitions", "8") \
-    .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
-    .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
-    .config("spark.jars", jars_path) \
-    .config("spark.driver.extraClassPath", jars_path) \
-    .config("spark.executor.extraClassPath", jars_path) \
-    .config("spark.executor.memory", "4g") \
-    .getOrCreate()
+    spark = SparkSession.builder \
+        .appName(app_name) \
+        .config("spark.jars", jars_path) \
+        .config("spark.hadoop.fs.s3a.impl", "org.apache.hadoop.fs.s3a.S3AFileSystem") \
+        .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
+        .getOrCreate()
 
-TRUSTED_PATH = "s3a://mba-nyc-dataset/trusted/"
-DW_PATH = "s3a://mba-nyc-dataset/dw/"
+    return spark
 
-def read_and_normalize(path: str, service_type: str):
+def get_taxi_sources(base_path: str) -> List[Tuple[str, str]]:
+    """
+    Define os caminhos e os tipos de serviço a serem lidos.
+
+    :param base_path: Caminho base do bucket S3 onde estão os dados trusted.
+    :return: Lista de tuplas com (caminho completo, tipo de serviço).
+    """
+    return [
+        (f"{base_path}/yellowTaxi", "yellow"),
+        (f"{base_path}/greenTaxi", "green"),
+        (f"{base_path}/forHireVehicle", "fhv"),
+        (f"{base_path}/highVolumeForHire", "fhvhv")
+    ]
+
+def read_and_normalize(spark: SparkSession, path: str, service_type: str) -> DataFrame:
+    """
+    Lê os arquivos Parquet de um tipo específico de táxi e normaliza os nomes e estruturas das colunas.
+
+    :param spark: Sessão Spark.
+    :param path: Caminho para os arquivos Parquet.
+    :param service_type: Tipo do serviço (yellow, green, fhv, fhvhv).
+    :return: DataFrame normalizado com colunas padronizadas e coluna service_type.
+    """
     df = spark.read.option("basePath", path).parquet(f"{path}/year=*/month=*/*.parquet")
     df = df.withColumn("service_type", lit(service_type))
 
-    # Normalização por tipo
-    if service_type == "yellow":
-        df = df.withColumnRenamed("tpep_pickup_datetime", "pickup_datetime") \
-               .withColumnRenamed("tpep_dropoff_datetime", "dropoff_datetime")
-    elif service_type == "green":
-        df = df.withColumnRenamed("lpep_pickup_datetime", "pickup_datetime") \
-               .withColumnRenamed("lpep_dropoff_datetime", "dropoff_datetime")
-
-    # Renomeia colunas comuns para todos os tipos (se existirem)
-    renames = {
-        "VendorID": "vendor_id",
-        "RatecodeID": "ratecode_id",
+    # Renomeia colunas conforme padrão
+    rename_map = {
+        "tpep_pickup_datetime": "pickup_datetime",
+        "tpep_dropoff_datetime": "dropoff_datetime",
+        "lpep_pickup_datetime": "pickup_datetime",
+        "lpep_dropoff_datetime": "dropoff_datetime",
         "PULocationID": "pickup_location_id",
-        "DOLocationID": "dropoff_location_id",
-        "payment_type": "payment_type",
+        "DOlocationID": "dropoff_location_id",
+        "RatecodeID": "ratecode_id",
+        "VendorID": "vendor_id",
         "Affiliated_base_number": "affiliated_base_number",
         "originating_base_num": "originating_base_number"
     }
-    for old, new in renames.items():
-        if old in df.columns:
-            df = df.withColumnRenamed(old, new)
+    for old_col, new_col in rename_map.items():
+        if old_col in df.columns:
+            df = df.withColumnRenamed(old_col, new_col)
 
-    # Adiciona colunas ausentes para alinhamento
-    required_cols = ["pickup_datetime", "dropoff_datetime", "passenger_count"]
+    # Lista de colunas obrigatórias na camada DW
+    required_cols = [
+        "pickup_datetime", "dropoff_datetime", "vendor_id", "ratecode_id",
+        "payment_type", "trip_type", "pickup_location_id", "dropoff_location_id",
+        "passenger_count", "trip_distance", "fare_amount", "tip_amount",
+        "tolls_amount", "total_amount", "extra", "mta_tax", "improvement_surcharge",
+        "ehail_fee", "congestion_surcharge", "airport_fee", "sales_tax", "bcf",
+        "driver_pay", "store_and_fwd_flag", "shared_request_flag", "shared_match_flag",
+        "access_a_ride_flag", "wav_request_flag", "wav_match_flag", "affiliated_base_number",
+        "originating_base_number", "has_problem", "problem_description", "year", "month"
+    ]
+    # Adiciona colunas ausentes com valores nulos
     for col_name in required_cols:
         if col_name not in df.columns:
-            df = df.withColumn(col_name, lit(None).cast("string" if "flag" in col_name else "double"))
+            df = df.withColumn(col_name, lit(None))
 
     return df
 
-trusted_yellow = read_and_normalize(f"{TRUSTED_PATH}yellowTaxi", "yellow")
-trusted_green = read_and_normalize(f"{TRUSTED_PATH}greenTaxi", "green")
-trusted_fhv = read_and_normalize(f"{TRUSTED_PATH}forHireVehicle", "fhv")
-trusted_fhvhv = read_and_normalize(f"{TRUSTED_PATH}highVolumeForHire", "fhvhv")
+def load_all_trusted_data(spark: SparkSession, base_path: str) -> DataFrame:
+    """
+    Lê e unifica todos os dados da camada trusted para todos os tipos de táxi.
 
-trusted_df = trusted_yellow.unionByName(trusted_green, allowMissingColumns=True) \
-                           .unionByName(trusted_fhv, allowMissingColumns=True) \
-                           .unionByName(trusted_fhvhv, allowMissingColumns=True)
+    :param spark: Sessão Spark.
+    :param base_path: Caminho base da trusted no S3.
+    :return: DataFrame unificado e normalizado com todos os dados.
+    """
+    sources = get_taxi_sources(base_path)
+    dfs = []
 
-df = trusted_df \
-    .withColumn("pickup_date", to_date("pickup_datetime")) \
-    .withColumn("dropoff_date", to_date("dropoff_datetime")) \
-    .withColumn("trip_duration_minutes", (col("dropoff_datetime").cast("long") - col("pickup_datetime").cast("long")) / 60) \
-    .withColumn("weekday", date_format(col("pickup_datetime"), "EEEE")) \
-    .withColumn("hour", hour("pickup_datetime")) \
-    .withColumn("fk_time", date_format("dropoff_datetime", "ddMMyyyy").cast("int")) \
-    .withColumn("sk_trip", monotonically_increasing_id())
+    for path, service_type in sources:
+        print(f"📥 Lendo dados de: {service_type.upper()} - {path}")
+        df = read_and_normalize(spark, path, service_type)
+        dfs.append(df)
 
-fact_taxi_trip = df.select(
-    "sk_trip", "vendor_id", "ratecode_id", "trip_type", "payment_type",
-    "fk_time", "service_type", "pickup_datetime", "dropoff_datetime",
-    "trip_duration_minutes", "pickup_location_id", "dropoff_location_id",
-    "passenger_count", "trip_distance", "fare_amount", "tip_amount",
-    "tolls_amount", "total_amount", "extra", "mta_tax", "improvement_surcharge",
-    "ehail_fee", "congestion_surcharge", "airport_fee", "sales_tax", "bcf",
-    "driver_pay", "store_and_fwd_flag", "shared_request_flag", "shared_match_flag",
-    "access_a_ride_flag", "wav_request_flag", "wav_match_flag", "affiliated_base_number",
-    "originating_base_number", "has_problem", "problem_description", "year", "month",
-    "weekday", "hour"
-)
+    print("🔗 Unindo todos os DataFrames normalizados...")
+    final_df = dfs[0]
+    for df in dfs[1:]:
+        final_df = final_df.unionByName(df, allowMissingColumns=True)
 
-fact_taxi_trip.write.mode("overwrite").parquet(f"{DW_PATH}fact_taxi_trip")
+    return final_df
 
-def get_season(month):
-    return (
-        when((month == 12) | (month <= 2), "Winter")
-        .when((month >= 3) & (month <= 5), "Spring")
-        .when((month >= 6) & (month <= 8), "Summer")
-        .when((month >= 9) & (month <= 11), "Fall")
-    )
+# Exemplo de execução principal
+if __name__ == "__main__":
+    spark = create_spark_session("NYC Taxi - Read Trusted")
+    base_trusted_path = "s3a://mba-nyc-dataset/trusted"
 
-dim_time = df.select("dropoff_date") \
-    .withColumn("sk_time", date_format("dropoff_date", "ddMMyyyy").cast("int")) \
-    .withColumn("date", date_format("dropoff_date", "yyyyMMdd").cast("int")) \
-    .withColumn("weekday", date_format("dropoff_date", "EEEE")) \
-    .withColumn("month", month("dropoff_date")) \
-    .withColumn("year", year("dropoff_date")) \
-    .withColumn("season", get_season(month("dropoff_date"))) \
-    .withColumn("is_weekend", dayofweek("dropoff_date").isin([1, 7])) \
-    .withColumn("is_holiday", lit(False)) \
-    .dropDuplicates(["sk_time"])
+    trusted_df = load_all_trusted_data(spark, base_trusted_path)
 
-dim_time.write.mode("overwrite").parquet(f"{DW_PATH}dim_time")
-
-dim_service_type = spark.createDataFrame([
-    ("yellow", "Yellow Taxi", "Taxi", "TLC"),
-    ("green", "Green Taxi", "Taxi", "TLC"),
-    ("fhv", "For-Hire Vehicle", "For-Hire", "Empresas Privadas"),
-    ("fhvhv", "High-Volume For-Hire Vehicle", "For-Hire", "Empresas Privadas"),
-], ["pk_service_type", "description", "category", "regulation_body"])
-
-dim_service_type.write.mode("overwrite").parquet(f"{DW_PATH}dim_service_type")
-
-zone_lookup = spark.read.option("header", True).csv("s3a://mba-nyc-dataset/reference/zone_lookup.csv")
-dim_location = zone_lookup.selectExpr("LocationID as pk_location", "Borough as borough", "Zone as zone", "service_zone").dropDuplicates()
-dim_location.write.mode("overwrite").parquet(f"{DW_PATH}dim_location")
-
-dim_payment_type = spark.createDataFrame([
-    (1, "Credit Card"),
-    (2, "Cash"),
-    (3, "No Charge"),
-    (4, "Dispute"),
-    (5, "Unknown"),
-    (6, "Voided Trip")
-], ["pk_payment_type", "description"])
-
-dim_payment_type.write.mode("overwrite").parquet(f"{DW_PATH}dim_payment_type")
-
-dim_ratecode = spark.createDataFrame([
-    (1, "Standard rate"),
-    (2, "JFK"),
-    (3, "Newark"),
-    (4, "Nassau or Westchester"),
-    (5, "Negotiated fare"),
-    (6, "Group ride")
-], ["ratecode_id", "description"])
-
-dim_ratecode.write.mode("overwrite").parquet(f"{DW_PATH}dim_ratecode")
-
-dim_vendor = df.select("vendor_id").where(col("vendor_id").isNotNull()).distinct() \
-    .withColumn("description", lit("Vendor desconhecido"))
-dim_vendor.write.mode("overwrite").parquet(f"{DW_PATH}dim_vendor")
-
-dim_trip_type = spark.createDataFrame([
-    (1, "Street-hail"),
-    (2, "Dispatch")
-], ["trip_type_id", "description"])
-
-dim_trip_type.write.mode("overwrite").parquet(f"{DW_PATH}dim_trip_type")
-
-print("✅ Dados da camada DW gerados com sucesso.")
+    print(f"✅ Dados carregados com sucesso: {trusted_df.count()} registros")
+    trusted_df.printSchema()
+    trusted_df.show(5)
