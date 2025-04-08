@@ -1,17 +1,17 @@
 from pyspark.sql import SparkSession
 
-# Dados de conexão com o RDS
-jdbc_url = "jdbc:mysql://<ENDPOINT>:3306/nyc_dw"
+# Conexão RDS MySQL
+jdbc_url = "jdbc:mysql://nyc-dw-mysql.coseekllgrql.us-east-1.rds.amazonaws.com:3306/nyc_dw"
 jdbc_props = {
-    "user": "<USUARIO>",
-    "password": "<SENHA>",
+    "user": "admin",
+    "password": "SuaSenhaForte123",
     "driver": "com.mysql.cj.jdbc.Driver"
 }
 
-# Caminho do conector JDBC local (Cloud9)
+# Caminho local do JAR no Cloud9
 jar_path = "/home/ec2-user/spark_jars/mysql-connector-j-8.0.33.jar"
 
-# Inicia Spark com o JAR
+# Inicializa Spark
 spark = SparkSession.builder \
     .appName("Export to RDS - Cloud9") \
     .config("spark.jars", jar_path) \
@@ -23,7 +23,6 @@ tables = [
     "dim_payment_type", "dim_vendor", "dim_ratecode"
 ]
 
-# Caminho base no S3
 base_path = "s3a://mba-nyc-dataset/dw/"
 
 for table in tables:
@@ -31,4 +30,4 @@ for table in tables:
     df = spark.read.parquet(f"{base_path}{table}")
     df.write.jdbc(url=jdbc_url, table=table, mode="overwrite", properties=jdbc_props)
 
-print("✅ Exportação concluída com sucesso!")
+print("✅ Exportação para o RDS concluída com sucesso!")
