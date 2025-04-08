@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import (
-    lit, to_date, date_format, hour, year, month, dayofweek, when, monotonically_increasing_id
+    lit, to_date, date_format, hour, year, month, dayofweek, when, monotonically_increasing_id, col
 )
 from pyspark.sql.types import LongType, DoubleType, StringType
 from typing import List, Tuple, Union
@@ -12,7 +12,6 @@ RDS_JDBC_URL = "jdbc:mysql://nyc-dw-mysql.coseekllgrql.us-east-1.rds.amazonaws.c
 RDS_USER = "admin"
 RDS_PASSWORD = "SuaSenhaForte123"
 
-
 def create_spark_session(app_name: str) -> SparkSession:
     jars_path = "/home/ec2-user/spark_jars/hadoop-aws-3.3.1.jar,/home/ec2-user/spark_jars/aws-java-sdk-bundle-1.11.901.jar,/home/ec2-user/spark_jars/mysql-connector-j-8.0.33.jar"
     spark = SparkSession.builder \
@@ -22,14 +21,6 @@ def create_spark_session(app_name: str) -> SparkSession:
         .config("spark.hadoop.fs.s3a.aws.credentials.provider", "com.amazonaws.auth.DefaultAWSCredentialsProviderChain") \
         .getOrCreate()
     return spark
-
-def get_taxi_sources(base_path: str) -> List[Tuple[str, str]]:
-    return [
-        (f"{base_path}/yellowTaxi", "yellow"),
-        (f"{base_path}/greenTaxi", "green"),
-        (f"{base_path}/forHireVehicle", "fhv"),
-        (f"{base_path}/highVolumeForHire", "fhvhv")
-    ]
 
 def read_and_normalize(spark: SparkSession, path: str, service_type: str, years: List[int], months: Union[List[int], str] = "*") -> DataFrame:
     if months == "*":
@@ -81,6 +72,14 @@ def read_and_normalize(spark: SparkSession, path: str, service_type: str, years:
     for col_name in required_cols:
         if col_name not in df.columns:
             df = df.withColumn(col_name, lit(None).cast(StringType()))
+
+    df = df.withColumn("pickup_date", to_date("pickup_datetime")) \
+           .withColumn("dropoff_date", to_date("dropoff_datetime")) \
+           .withColumn("trip_duration_minutes", (col("dropoff_datetime").cast("long") - col("pickup_datetime").cast("long")) / 60) \
+           .withColumn("weekday", date_format(col("pickup_datetime"), "EEEE")) \
+           .withColumn("hour", hour("pickup_datetime")) \
+           .withColumn("fk_time", date_format("dropoff_datetime", "ddMMyyyy").cast("int")) \
+           .withColumn("sk_trip", monotonically_increasing_id())
 
     return df
 
