@@ -1,3 +1,4 @@
+# Criação do RDS e tabelas
 1. Criar um grupo de segurança para o RDS
 
 ```
@@ -124,12 +125,18 @@ A alteração da senha não reinicia a instância
    ![image](https://github.com/user-attachments/assets/b0de7591-6b56-479e-a7d9-b9821b430983)
 
 
-  7.3 Ver todos bases criadas:
+8. Ver todos bases criadas:
   `SHOW DATABASES;`
   
   ![image](https://github.com/user-attachments/assets/e0091f8f-7dcf-4694-b14a-47438c261a8d)
 
-8. Instalar o JDBC do MySQL, e salvar no EMR e Cloud9
+9. Ver tabelas criadas:
+`USE nyc_dw;`
+`SHOW TABLES;`
+![image](https://github.com/user-attachments/assets/f22d1bdd-f840-44ba-b919-a93772dcca84)
+
+
+# Instalar o JDBC do MySQL
 
 https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar
 
