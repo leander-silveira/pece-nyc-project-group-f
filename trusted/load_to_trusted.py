@@ -94,10 +94,10 @@ def apply_cleaning_rules(df, taxi_type):
     return df
 
 # Função principal de transformação
-def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
+def trusted_transform(bucket_s3, month, year, taxi_type_folder, taxi_type_filename):
     filename = f"{taxi_type_filename}_{year}-{month}.parquet"
-    source_path = f"s3a://mba-nyc-dataset/raw/{taxi_type_folder}/{year}/{filename}"
-    destination_path = f"s3a://mba-nyc-dataset/trusted/{taxi_type_folder}/"
+    source_path = f"s3a://{bucket_s3}/raw/{taxi_type_folder}/{year}/{filename}"
+    destination_path = f"s3a://{bucket_s3}/trusted/{taxi_type_folder}/"
 
     print(f"\n🔄 Processando arquivo: {filename}")
     try:
@@ -126,11 +126,13 @@ def trusted_transform(month, year, taxi_type_folder, taxi_type_filename):
 # Loop principal
 months = [f"{m:02d}" for m in range(1, 13)]
 years = [2022, 2023, 2024]
+bucket_s3 = 'mba-nyc-dataset-f'
 
 for year in years:
     for month in months:
         for taxi_type_filename, taxi_type_folder in TAXI_TYPES.items():
             trusted_transform(
+                bucket_s3=bucket_s3,
                 month=month,
                 year=year,
                 taxi_type_folder=taxi_type_folder,
