@@ -66,7 +66,7 @@ aws rds create-db-instance \
 ```
 ![image](https://github.com/user-attachments/assets/d9c78ba6-eb3d-446d-9b55-caead2d065a6)
 
-![image](https://github.com/user-attachments/assets/6b692444-234c-4e94-8f63-da4e685aba52)
+![image](https://github.com/user-attachments/assets/682eca06-631e-4dc2-b9de-0245c5409502)
 
 4. Verificar status
 
@@ -75,7 +75,7 @@ aws rds describe-db-instances \
   --db-instance-identifier nyc-dw-mysql \
   --query "DBInstances[0].DBInstanceStatus"
 ```
-![image](https://github.com/user-attachments/assets/f4d61fef-e45f-4cd6-814b-35c318081bb0)
+![image](https://github.com/user-attachments/assets/2c6fcc00-bd4a-45a3-bb84-b19a2af230f4)
 
 5. Pegar o endpoint
 
@@ -85,3 +85,6 @@ aws rds describe-db-instances \
   --query "DBInstances[0].Endpoint.Address" \
   --output text
 ```
+nyc-dw-mysql.coseekllgrql.us-east-1.rds.amazonaws.com
+
+![image](https://github.com/user-attachments/assets/ed51b034-fa6a-4ad3-904a-d08d5c2b9fc2)
