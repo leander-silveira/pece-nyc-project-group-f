@@ -135,6 +135,9 @@ A alteração da senha não reinicia a instância
 `SHOW TABLES;`
 ![image](https://github.com/user-attachments/assets/f22d1bdd-f840-44ba-b919-a93772dcca84)
 
+`DESCRIBE fact_taxi_trip;`
+
+![image](https://github.com/user-attachments/assets/e4cdddeb-bbbd-492d-bff4-ed8f3c4efff2)
 
 # Instalar o JDBC do MySQL
 
