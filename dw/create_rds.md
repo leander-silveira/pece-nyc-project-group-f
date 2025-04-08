@@ -88,3 +88,20 @@ aws rds describe-db-instances \
 nyc-dw-mysql.coseekllgrql.us-east-1.rds.amazonaws.com
 
 ![image](https://github.com/user-attachments/assets/ed51b034-fa6a-4ad3-904a-d08d5c2b9fc2)
+
+
+6. Instalar o JDBC do MySQL, e salvar no EMR e Cloud9
+
+https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar
+
+
+Cloud9:
+```
+mkdir -p /home/ec2-user/spark_jars
+wget https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar -P /home/ec2-user/spark_jars/
+```
+
+EMR:
+```s3://mba-nyc-dataset/emr/jars/mysql-connector-j-8.0.33.jar```
+![image](https://github.com/user-attachments/assets/d7183673-c428-41af-9c37-bc067c11a23e)
+
