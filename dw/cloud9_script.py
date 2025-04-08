@@ -1,11 +1,9 @@
-
-import os
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import (
     lit, to_date, date_format, hour, year, month, dayofweek, when, monotonically_increasing_id
 )
-from typing import List, Tuple
 from pyspark.sql.types import LongType, DoubleType
+from typing import List, Tuple, Union
 
 # Caminho da camada trusted e destino da camada dw
 TRUSTED_PATH = "s3a://mba-nyc-dataset/trusted"
@@ -39,7 +37,13 @@ def get_taxi_sources(base_path: str) -> List[Tuple[str, str]]:
     ]
 
 
-def read_and_normalize(spark: SparkSession, path: str, service_type: str) -> DataFrame:
+def read_and_normalize(
+    spark: SparkSession,
+    path: str,
+    service_type: str,
+    years: List[int],
+    months: Union[List[int], str] = "*"
+) -> DataFrame:
     """
     Lê os arquivos Parquet de um tipo específico de táxi e normaliza os nomes e estruturas das colunas.
 
@@ -48,10 +52,15 @@ def read_and_normalize(spark: SparkSession, path: str, service_type: str) -> Dat
     :param service_type: Tipo do serviço (yellow, green, fhv, fhvhv).
     :return: DataFrame normalizado com colunas padronizadas e coluna service_type.
     """
-    df = spark.read.option("basePath", path).parquet(f"{path}/year=*/month=*/*.parquet")
+    if months == "*":
+        parquet_paths = [f"{path}/year={year}/month=*/*.parquet" for year in years]
+    else:
+        parquet_paths = [f"{path}/year={year}/month={month}/*.parquet" for year in years for month in months]
+
+    df = spark.read.option("basePath", path).parquet(*parquet_paths)
     df = df.withColumn("service_type", lit(service_type))
 
-    # Renomeia colunas conforme padrão
+    # Renomeia colunas
     rename_map = {
         "tpep_pickup_datetime": "pickup_datetime",
         "tpep_dropoff_datetime": "dropoff_datetime",
@@ -68,7 +77,7 @@ def read_and_normalize(spark: SparkSession, path: str, service_type: str) -> Dat
         if old_col in df.columns:
             df = df.withColumnRenamed(old_col, new_col)
 
-    # Força tipos esperados para evitar conflitos no union
+    from pyspark.sql.types import LongType, DoubleType
     type_map = {
         "vendor_id": LongType(),
         "ratecode_id": DoubleType(),
@@ -81,7 +90,6 @@ def read_and_normalize(spark: SparkSession, path: str, service_type: str) -> Dat
         if col_name in df.columns:
             df = df.withColumn(col_name, df[col_name].cast(data_type))
 
-    # Lista de colunas obrigatórias na camada DW
     required_cols = [
         "pickup_datetime", "dropoff_datetime", "vendor_id", "ratecode_id",
         "payment_type", "trip_type", "pickup_location_id", "dropoff_location_id",
@@ -98,8 +106,7 @@ def read_and_normalize(spark: SparkSession, path: str, service_type: str) -> Dat
 
     return df
 
-
-def load_all_trusted_data(spark: SparkSession, base_path: str) -> DataFrame:
+def load_all_trusted_data(spark: SparkSession, base_path: str, years: List[int], months: Union[List[int], str]) -> DataFrame:
     """
     Lê e unifica todos os dados da camada trusted para todos os tipos de táxi.
 
@@ -109,10 +116,17 @@ def load_all_trusted_data(spark: SparkSession, base_path: str) -> DataFrame:
     """
     sources = get_taxi_sources(base_path)
     dfs = []
+
     for path, service_type in sources:
-        print(f"📥 Lendo dados de: {service_type.upper()} - {path}")
-        df = read_and_normalize(spark, path, service_type)
-        dfs.append(df)
+        print(f"📥 Lendo dados de: {service_type.upper()} - {path} - anos={years}, meses={months}")
+        try:
+            df = read_and_normalize(spark, path, service_type, years, months)
+            dfs.append(df)
+        except Exception as e:
+            print(f"⚠️ Erro ao ler {service_type}: {e}")
+
+    if not dfs:
+        raise ValueError("❌ Nenhum dado foi carregado.")
 
     print("🔗 Unindo todos os DataFrames normalizados...")
     final_df = dfs[0]
@@ -176,7 +190,7 @@ def build_and_save_dim_service_type(spark: SparkSession):
     write_parquet(dim, "dim_service_type")
 
 def build_and_save_dim_location(spark: SparkSession):
-    zone_lookup = spark.read.option("header", True).csv("s3a://mba-nyc-dataset/reference/zone_lookup.csv")
+    zone_lookup = spark.read.option("header", True).csv("s3a://mba-nyc-dataset/reference/taxi_zone_lookup.csv")
     dim = zone_lookup.selectExpr("LocationID as pk_location", "Borough as borough", "Zone as zone", "service_zone").dropDuplicates()
     write_parquet(dim, "dim_location")
 
@@ -209,7 +223,11 @@ def build_and_save_dim_ratecode(spark: SparkSession):
 
 if __name__ == "__main__":
     spark = create_spark_session("NYC Taxi - DW")
-    trusted_df = load_all_trusted_data(spark, TRUSTED_PATH)
+
+    anos = [2024]
+    meses = [10]
+
+    trusted_df = load_all_trusted_data(spark, TRUSTED_PATH, anos, meses)
 
     build_and_save_fact_table(trusted_df)
     build_and_save_dim_time(trusted_df)
