@@ -47,7 +47,7 @@ Retorno:
     ]
 }
 ```
-3. Criar o RDS MySQL
+3. Criar instância RDS MySQL
 
 ```
 aws rds create-db-instance \
@@ -90,9 +90,16 @@ nyc-dw-mysql.coseekllgrql.us-east-1.rds.amazonaws.com
 ![image](https://github.com/user-attachments/assets/ed51b034-fa6a-4ad3-904a-d08d5c2b9fc2)
 
 6.Pegar usuário e senha
+É o mesmo definido na criação da instância
+```
+ --master-username admin \
+--master-user-password SuaSenhaForte123 \
+```
 Seção "Configurações":
 - Usuário mestre (Master username): admin
 - Senha: não aparece no console por segurança
+
+Caso ainda assim precise da senha, redifina.
 
 6.1 Redefinir a senha:
 
@@ -105,7 +112,17 @@ Seção "Configurações":
 
 A alteração da senha não reinicia a instância
 
-7. Instalar o JDBC do MySQL, e salvar no EMR e Cloud9
+7. Criar Banco de dados.
+   7.1 Conectar na instância
+`mysql -h nyc-dw-mysql.coseekllgrql.us-east-1.rds.amazonaws.com -u admin -p`
+
+![image](https://github.com/user-attachments/assets/aaf58740-9938-4701-b2ab-b2ec0c88c310)
+
+   7.2 Criar banco de dados `nyc_dw`:
+`CREATE DATABASE nyc_dw;` 
+   ![image](https://github.com/user-attachments/assets/b0de7591-6b56-479e-a7d9-b9821b430983)
+
+9. Instalar o JDBC do MySQL, e salvar no EMR e Cloud9
 
 https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar
 
@@ -120,3 +137,4 @@ EMR:
 ```s3://mba-nyc-dataset/emr/jars/mysql-connector-j-8.0.33.jar```
 ![image](https://github.com/user-attachments/assets/d7183673-c428-41af-9c37-bc067c11a23e)
 
+10. Rodar código pyspark
