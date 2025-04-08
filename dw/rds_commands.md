@@ -120,19 +120,24 @@ A alteração da senha não reinicia a instância
 ![image](https://github.com/user-attachments/assets/aaf58740-9938-4701-b2ab-b2ec0c88c310)
 
    7.2 Criar banco de dados `nyc_dw`:
+   
 `CREATE DATABASE nyc_dw;` 
 
    ![image](https://github.com/user-attachments/assets/b0de7591-6b56-479e-a7d9-b9821b430983)
 
 
 8. Ver todos bases criadas:
+   
   `SHOW DATABASES;`
   
   ![image](https://github.com/user-attachments/assets/e0091f8f-7dcf-4694-b14a-47438c261a8d)
 
 9. Ver tabelas criadas:
+    
 `USE nyc_dw;`
+
 `SHOW TABLES;`
+
 ![image](https://github.com/user-attachments/assets/f22d1bdd-f840-44ba-b919-a93772dcca84)
 
 `DESCRIBE fact_taxi_trip;`
