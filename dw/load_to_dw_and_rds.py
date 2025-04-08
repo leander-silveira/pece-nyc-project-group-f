@@ -6,9 +6,10 @@ from pyspark.sql.types import LongType, DoubleType
 from typing import List, Tuple, Union
 
 # Caminhos fixos utilizados
-TRUSTED_PATH = "s3a://mba-nyc-dataset/trusted"
-DW_PATH = "s3a://mba-nyc-dataset/dw"
-RDS_JDBC_JAR = "s3://mba-nyc-dataset/emr/jars/mysql-connector-j-8.0.33.jar"
+BUCKET_S3 = "mba-nyc-dataset"
+TRUSTED_PATH = f"s3a://{BUCKET_S3}/trusted"
+DW_PATH = f"s3a://{BUCKET_S3}/dw"
+RDS_JDBC_JAR = f"s3://{BUCKET_S3}/emr/jars/mysql-connector-j-8.0.33.jar"
 RDS_JDBC_URL = "jdbc:mysql://nyc-dw-mysql.coseekllgrql.us-east-1.rds.amazonaws.com:3306/nyc_dw"
 RDS_USER = "admin"
 RDS_PASSWORD = "SuaSenhaForte123"
