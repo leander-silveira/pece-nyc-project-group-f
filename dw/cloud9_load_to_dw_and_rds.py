@@ -2,7 +2,7 @@ from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import (
     lit, to_date, date_format, hour, year, month, dayofweek, when, monotonically_increasing_id
 )
-from pyspark.sql.types import LongType, DoubleType
+from pyspark.sql.types import LongType, DoubleType, StringType
 from typing import List, Tuple, Union
 
 # Caminhos fixos utilizados
@@ -76,9 +76,11 @@ def read_and_normalize(spark: SparkSession, path: str, service_type: str, years:
         "originating_base_number", "has_problem", "problem_description", "year", "month",
         "airport_fee"
     ]
+
     for col in required_cols:
         if col not in df.columns:
-            df = df.withColumn(col, lit(None).cast(DoubleType() if col in type_map or col.endswith("_amount") or col.endswith("_fee") else df.schema[col].dataType if col in df.columns else StringType()))
+            dtype = DoubleType() if col in type_map or col.endswith("_amount") or col.endswith("_fee") else StringType()
+            df = df.withColumn(col, lit(None).cast(dtype))
 
     return df
 
