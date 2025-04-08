@@ -1,9 +1,11 @@
+
 import os
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import (
     lit, to_date, date_format, hour, year, month, dayofweek, when, monotonically_increasing_id
 )
 from typing import List, Tuple
+from pyspark.sql.types import LongType, DoubleType
 
 # Caminho da camada trusted e destino da camada dw
 TRUSTED_PATH = "s3a://mba-nyc-dataset/trusted"
@@ -36,6 +38,7 @@ def get_taxi_sources(base_path: str) -> List[Tuple[str, str]]:
         (f"{base_path}/highVolumeForHire", "fhvhv")
     ]
 
+
 def read_and_normalize(spark: SparkSession, path: str, service_type: str) -> DataFrame:
     """
     Lê os arquivos Parquet de um tipo específico de táxi e normaliza os nomes e estruturas das colunas.
@@ -48,6 +51,7 @@ def read_and_normalize(spark: SparkSession, path: str, service_type: str) -> Dat
     df = spark.read.option("basePath", path).parquet(f"{path}/year=*/month=*/*.parquet")
     df = df.withColumn("service_type", lit(service_type))
 
+    # Renomeia colunas conforme padrão
     rename_map = {
         "tpep_pickup_datetime": "pickup_datetime",
         "tpep_dropoff_datetime": "dropoff_datetime",
@@ -64,6 +68,20 @@ def read_and_normalize(spark: SparkSession, path: str, service_type: str) -> Dat
         if old_col in df.columns:
             df = df.withColumnRenamed(old_col, new_col)
 
+    # Força tipos esperados para evitar conflitos no union
+    type_map = {
+        "vendor_id": LongType(),
+        "ratecode_id": DoubleType(),
+        "payment_type": DoubleType(),
+        "trip_type": DoubleType(),
+        "pickup_location_id": DoubleType(),
+        "dropoff_location_id": DoubleType()
+    }
+    for col_name, data_type in type_map.items():
+        if col_name in df.columns:
+            df = df.withColumn(col_name, df[col_name].cast(data_type))
+
+    # Lista de colunas obrigatórias na camada DW
     required_cols = [
         "pickup_datetime", "dropoff_datetime", "vendor_id", "ratecode_id",
         "payment_type", "trip_type", "pickup_location_id", "dropoff_location_id",
@@ -77,7 +95,9 @@ def read_and_normalize(spark: SparkSession, path: str, service_type: str) -> Dat
     for col_name in required_cols:
         if col_name not in df.columns:
             df = df.withColumn(col_name, lit(None))
+
     return df
+
 
 def load_all_trusted_data(spark: SparkSession, base_path: str) -> DataFrame:
     """
@@ -105,7 +125,6 @@ def write_parquet(df: DataFrame, table_name: str):
     output_path = f"{DW_PATH}/{table_name}"
     df.write.mode("overwrite").parquet(output_path)
     print(f"✅ Tabela {table_name} salva em: {output_path}")
-
 
 def build_and_save_fact_table(df: DataFrame):
     df = df.withColumn("pickup_date", to_date("pickup_datetime")) \
