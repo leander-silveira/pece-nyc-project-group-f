@@ -120,9 +120,16 @@ A alteração da senha não reinicia a instância
 
    7.2 Criar banco de dados `nyc_dw`:
 `CREATE DATABASE nyc_dw;` 
+
    ![image](https://github.com/user-attachments/assets/b0de7591-6b56-479e-a7d9-b9821b430983)
 
-9. Instalar o JDBC do MySQL, e salvar no EMR e Cloud9
+
+  7.3 Ver todos bases criadas:
+  `SHOW DATABASES;`
+  
+  ![image](https://github.com/user-attachments/assets/e0091f8f-7dcf-4694-b14a-47438c261a8d)
+
+8. Instalar o JDBC do MySQL, e salvar no EMR e Cloud9
 
 https://repo1.maven.org/maven2/com/mysql/mysql-connector-j/8.0.33/mysql-connector-j-8.0.33.jar
 
