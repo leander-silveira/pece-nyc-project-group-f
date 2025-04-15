@@ -33,7 +33,7 @@ def load_dataframes(spark: SparkSession, year = '*', month = '*') -> DataFrame:
     for service in SERVICE_TYPES:
         base_path = f"{TRUSTED_PATH}/{service}"
         try:
-            df = spark.read.option("basePath", base_path).parquet(f"{base_path}/*/{month}/*.parquet")
+            df = spark.read.option("basePath", base_path).parquet(f"{base_path}/{year}/{month}/*.parquet")
             df = df.withColumn("service_type", lit(service))
             dfs.append(df)
             
@@ -124,14 +124,15 @@ def create_dim_service_type(df: DataFrame, spark: SparkSession, table_name: str 
     # print("dim_service_type")
     # df_service_type.show()
     
-    # print("Loading dim_service_type to DW and RDS")
-    # write_to_dw(df=df_service_type, spark=spark, table_name=table_name)
+    print("Loading dim_service_type to DW and RDS")
+    write_to_dw(df=df_service_type, spark=spark, table_name=table_name)
     
     return df
 
 
     
     # return 
+
 def create_dim_date(spark: SparkSession, table_name: str = 'dim_date'):
 
     start_date = datetime(2024, 1, 1)
@@ -160,7 +161,6 @@ def create_dim_date(spark: SparkSession, table_name: str = 'dim_date'):
     
     return
 
-
 def create_dim_vendor(df: DataFrame, spark: SparkSession, table_name: str = 'dim_vendor') -> DataFrame:
     
     df_vendor = df.select("id_vendor") \
@@ -182,8 +182,8 @@ def create_dim_vendor(df: DataFrame, spark: SparkSession, table_name: str = 'dim
     # print("dim_vendor")
     # df_vendor.show()
     
-    # print("Loading dim_vendor to DW and RDS")
-    # write_to_dw(df=df_vendor, spark=spark, table_name=table_name)
+    print("Loading dim_vendor to DW and RDS")
+    write_to_dw(df=df_vendor, spark=spark, table_name=table_name)
 
     # Realiza o join usando os nomes corretos
     df = df.join(df_vendor.select("sk_vendor", "id_vendor"), on="id_vendor", how="left") \
@@ -193,7 +193,6 @@ def create_dim_vendor(df: DataFrame, spark: SparkSession, table_name: str = 'dim
     # df.show(1, vertical = True)
     
     return df
-
 
 def create_dim_payment_type(df: DataFrame, spark: SparkSession, table_name: str = 'dim_payment_type') -> DataFrame:
     df_payment_type = df.select("id_payment_type") \
@@ -218,8 +217,9 @@ def create_dim_payment_type(df: DataFrame, spark: SparkSession, table_name: str 
     # df_payment_type.show()
     
     
-    # print("Loading dim_payment_type to DW and RDS")
-    # write_to_dw(df=df_payment_type, spark=spark, table_name=table_name)
+    print("Loading dim_payment_type to DW and RDS")
+    # update_dim_scd2(df=df_payment_type, table=table_name, chave_natural="id_payment_type",)
+    write_to_dw(df=df_payment_type, spark=spark, table_name=table_name)
 
     df = df.join(df_payment_type.select("id_payment_type","sk_payment_type"), on="id_payment_type", how="left") \
           .withColumnRenamed("sk_payment_type", "fk_payment_type")
@@ -255,8 +255,8 @@ def create_dim_rate(df: DataFrame, spark: SparkSession, table_name: str = 'dim_r
     # df_rate.show()
     
     
-    # print("Loading dim_rate to DW and RDS")
-    # write_to_dw(df=df_rate, spark=spark, table_name=table_name)
+    print("Loading dim_rate to DW and RDS")
+    write_to_dw(df=df_rate, spark=spark, table_name=table_name)
     
     df = df.join(df_rate.select("sk_ratecode","id_rate"), on="id_rate", how="left") \
           .withColumnRenamed("sk_ratecode", "fk_ratecode")
@@ -265,7 +265,6 @@ def create_dim_rate(df: DataFrame, spark: SparkSession, table_name: str = 'dim_r
     
     
     return df
-
 
 def create_dim_location(spark: SparkSession, table_name: str = 'dim_location') -> DataFrame:
     df_location = (
@@ -287,6 +286,7 @@ def create_dim_location(spark: SparkSession, table_name: str = 'dim_location') -
     write_to_dw(df=df_location, spark=spark, table_name=table_name)
     
     return
+
 def create_dim_companies_hv(df: DataFrame, spark: SparkSession, table_name: str = 'dim_companies_hv') -> DataFrame:
     df_companies_hv = (
         spark.read.parquet("s3a://f-mba-nyc-dataset/dw/dim_companies.parquet") \
@@ -323,7 +323,6 @@ def create_dim_companies_hv(df: DataFrame, spark: SparkSession, table_name: str 
     
     return df
 
-
 def create_dim_license_number(df: DataFrame, spark: SparkSession, table_name: str = 'dim_license_number') -> DataFrame:
     df_license_number = (
         spark.read.parquet("s3a://f-mba-nyc-dataset/dw/dim_license_number.parquet") \
@@ -358,7 +357,6 @@ def create_dim_license_number(df: DataFrame, spark: SparkSession, table_name: st
     
     return df
     
-
 def create_fact_taxi_trip(df: DataFrame, spark: SparkSession, table_name: str = 'fact_taxi_trip') -> DataFrame:
 
     df_fact_taxi_trip = df.select("fk_payment_type", "fk_ratecode", "fk_vendor","pickup_datetime", "dropoff_datetime", 
@@ -384,7 +382,7 @@ def create_fact_taxi_trip(df: DataFrame, spark: SparkSession, table_name: str = 
     ### PEGANDO APENAS 1000 LINHAS DE CADA TIPO DE SERVIÇO
     dfs_sampled = []
     for service_type in SERVICE_TYPES:
-        df_sample = df_fact_taxi_trip.filter(df_fact_taxi_trip["fk_service_type"] == service_type).sample(fraction=0.08).limit(1000)
+        df_sample = df_fact_taxi_trip.filter(df_fact_taxi_trip["fk_service_type"] == service_type).sample(fraction=0.05).limit(1000)
         dfs_sampled.append(df_sample)
 
     # Unir todos os samples em um único DataFrame
@@ -398,7 +396,8 @@ def create_fact_taxi_trip(df: DataFrame, spark: SparkSession, table_name: str = 
     
     
     print("Loading fact_taxi_trip to DW and RDS")
-    write_to_dw(df=df_fact_taxi_trip_sample, spark=spark, table_name=table_name)
+    write_to_dw(df=df_fact_taxi_trip_sample, spark=spark, table_name=table_name, mode="append")
+    # write_fact_to_dw(df=df_fact_taxi_trip_sample, spark=spark, table_name=table_name)
     
     return df 
 
@@ -411,19 +410,38 @@ def create_dimensions_and_fact(df: DataFrame, spark: SparkSession):
     df = create_dim_service_type(df, spark)
     df = create_dim_companies_hv(df, spark) # Apenas o High Volume
     df = create_dim_license_number(df, spark) # Apenas para FHV
+    create_dim_location(spark)
+    create_dim_date(spark)
     
     print("Loading fact_taxi_trip to DW and RDS")
     df = create_fact_taxi_trip(df, spark)
     print("ETL finalizado com sucesso.")
     
-    create_dim_location(spark)
-    create_dim_date(spark)
-    
-    
+def delete_partition_rds(table_name: str, year: str, month: str):
+    import mysql.connector
 
-            
-def write_to_dw(df: DataFrame, spark: SparkSession, table_name, partition_s3=4, partition_rds=1):
-    # df.coalesce(partition_s3).write.mode("overwrite").parquet(f"{DW_PATH}/{table_name}")
+    print(f"🧹 Limpando partição {year}/{month} na tabela {table_name} do RDS...")
+
+    try:
+        conn = mysql.connector.connect(
+            host="nyc-dw-mysql-v2.chmgbrx9sdjy.us-east-1.rds.amazonaws.com",
+            user=RDS_USER,
+            password=RDS_PASSWORD,
+            database="nyc_dw"
+        )
+        cursor = conn.cursor()
+        delete_query = f"DELETE FROM {table_name} WHERE year = {year} AND month = {month}"
+        cursor.execute(delete_query)
+        conn.commit()
+        cursor.close()
+        conn.close()
+        print(f"✅ Dados antigos da partição {year}/{month} removidos com sucesso.")
+    except Exception as e:
+        print(f"❌ Erro ao tentar remover partição {year}/{month} da tabela {table_name} no RDS:")
+        print(e)
+
+def write_to_dw(df: DataFrame, spark: SparkSession, table_name, partition_s3=4, partition_rds=1, mode="overwrite"):
+    # df.coalesce(partition_s3).write.mode(mode).parquet(f"{DW_PATH}/{table_name}")
     df.coalesce(partition_rds).write \
         .format("jdbc") \
         .option("url", RDS_JDBC_URL) \
@@ -431,28 +449,147 @@ def write_to_dw(df: DataFrame, spark: SparkSession, table_name, partition_s3=4, 
         .option("user", RDS_USER) \
         .option("password", RDS_PASSWORD) \
         .option("driver", "com.mysql.cj.jdbc.Driver") \
-        .mode("overwrite") \
+        .mode(mode) \
         .save()
+
+def update_dim_scd2(df: DataFrame, table: str, chave_natural: str):
+    """
+    Atualiza uma tabela de dimensão aplicando SCD Tipo 2 no RDS.
+    """
+    from pyspark.sql.functions import col, current_date, lit
+    from pyspark.sql import SparkSession
+
+    spark = df.sparkSession
+    # Lê dimensão atual
+    df_atual = spark.read \
+        .format("jdbc") \
+        .option("url", RDS_JDBC_URL) \
+        .option("dbtable", table) \
+        .option("user", RDS_USER) \
+        .option("password", RDS_PASSWORD) \
+        .load()
+
+    # Join entre novo e atual pela chave natural
+    df_joined = df.alias("novo").join(
+        df_atual.alias("atual"),
+        on=chave_natural,
+        how="outer"
+    )
+
+    # Detecta alterações ou registros novos
+    cond_diferente = " OR ".join([
+        f"(novo.{coluna} != atual.{coluna})"
+        for coluna in df.columns
+        if coluna != chave_natural
+    ])
+
+    df_novos = df_joined.filter(
+        col(f"atual.{chave_natural}").isNull() | eval(cond_diferente)
+    ).select("novo.*") \
+     .withColumn("effective_date", current_date()) \
+     .withColumn("end_date", lit(None).cast("date")) \
+     .withColumn("is_current", lit(True))
+
+    # Registros que mudaram: encerramos os antigos
+    df_atualizados = df_joined.filter(
+        eval(cond_diferente) & col("atual.is_current")
+    ).select("atual.*") \
+     .withColumn("end_date", current_date()) \
+     .withColumn("is_current", lit(False))
+
+    # Registros inalterados permanecem
+    df_inalterados = df_atual.filter("is_current") \
+        .join(df_novos.select(chave_natural), on=chave_natural, how="left_anti")
+
+    # Junta tudo
+    df_final = df_inalterados.unionByName(df_atualizados).unionByName(df_novos)
+
+    # Grava no RDS
+    df_final.write \
+        .mode("append") \
+        .format("jdbc") \
+        .option("url", RDS_JDBC_URL) \
+        .option("dbtable", table) \
+        .option("user", RDS_USER) \
+        .option("password", RDS_PASSWORD) \
+        .save()
+
+### =======================================================
+### COM PARTICIONAMENTO
+# def write_fact_to_dw(df: DataFrame, spark: SparkSession, table_name: str, year: str, month: str, partition_s3=4, partition_rds=1):
+#     # ✅ 1. Sobrescreve apenas a partição no S3
+#     spark.conf.set("spark.sql.sources.partitionOverwriteMode", "dynamic")
+
+#     df.coalesce(partition_s3) \
+#         .write \
+#         .mode("overwrite") \
+#         .partitionBy("year", "month") \
+#         .parquet(f"{DW_PATH}/{table_name}")
+
+#     # ✅ 2. Deleta os dados da partição correspondente no MySQL RDS
+#     delete_partition_rds(table_name, year, month)
+
+#     # ✅ 3. Escreve em modo append no RDS
+#     df.coalesce(partition_rds).write \
+#         .format("jdbc") \
+#         .option("url", RDS_JDBC_URL) \
+#         .option("dbtable", table_name) \
+#         .option("user", RDS_USER) \
+#         .option("password", RDS_PASSWORD) \
+#         .option("driver", "com.mysql.cj.jdbc.Driver") \
+#         .mode("append") \
+#         .save()
+### =======================================================
+
+
+### =======================================================
+### SEM PARTICIONAMENTO. SUBINDO NO S3 TAMBÉM
+### =======================================================
+# def write_to_dw(df: DataFrame, spark: SparkSession, table_name, partition_s3=4, partition_rds=1):
+#     # Salvar no S3 particionado por year/month
+#     df.coalesce(partition_s3) \
+#         .write \
+#         .mode("overwrite") \
+#         .partitionBy("year", "month") \
+#         .parquet(f"{DW_PATH}/{table_name}")
+
+#     # Salvar no MySQL RDS (sem particionamento nativo, mas inclui year/month para simulação lógica)
+#     df.coalesce(partition_rds).write \
+#         .format("jdbc") \
+#         .option("url", RDS_JDBC_URL) \
+#         .option("dbtable", table_name) \
+#         .option("user", RDS_USER) \
+#         .option("password", RDS_PASSWORD) \
+#         .option("driver", "com.mysql.cj.jdbc.Driver") \
+#         .mode("overwrite") \
+#         .save()
+### =======================================================
+
 
 def main():
     spark = create_spark_session("NYC Taxi Load to DW and RDS")
-
     # 1. Carrega todos os DataFrames para os tipos de serviço
-    dfs = load_dataframes(spark, year = "year=2024", month = "month=10")
-
-    if not dfs:
-        print("Nenhum dado encontrado para os serviços especificados.")
-        return
-
-    # 2. Une todos os DataFrames em um único
-    df_union = normalize_columns(dfs[0])
-    for df in dfs[1:]:
-        df_union = df_union.unionByName(normalize_columns(df), allowMissingColumns=True)
+    months = [
+        '1', '2', '3' , '4', '5', '6', '7', '8', '9', '10', '11','12'
+    ]
+    for month in months:
+        month_name = f"month={month}"
+        print(f"Carregando o mês {month_name}")
+        dfs = load_dataframes(spark, year = "year=2024", month = month_name)
     
-    # 3. Carregando dimensões e fatos
-    create_dimensions_and_fact(df_union, spark)
-
-    spark.stop()
+        if not dfs:
+            print("Nenhum dado encontrado para os serviços especificados.")
+            return
+    
+        # 2. Une todos os DataFrames em um único
+        df_union = normalize_columns(dfs[0])
+        for df in dfs[1:]:
+            df_union = df_union.unionByName(normalize_columns(df), allowMissingColumns=True)
+        
+        # 3. Carregando dimensões e fatos
+        create_dimensions_and_fact(df_union, spark)
+    
+        # spark.stop()
     
 
 if __name__ == "__main__":
