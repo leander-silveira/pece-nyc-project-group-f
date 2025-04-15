@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession, DataFrame
 from pyspark.sql.functions import (
-    col, year, month, dayofmonth, dayofweek, to_date, lit, monotonically_increasing_id, when, date_format, upper
+    col, year, month, dayofmonth, dayofweek, to_date, lit, monotonically_increasing_id, when, date_format, upper, current_timestamp, from_utc_timestamp
 )
 from pyspark.sql.types import LongType, DoubleType
 from datetime import datetime, timedelta
@@ -393,10 +393,8 @@ def create_fact_taxi_trip(df: DataFrame, spark: SparkSession, table_name: str = 
                             
     # df_fact_taxi_trip_sample = df_fact_taxi_trip.sample(fraction=0.08)
     
-    
-    
     print("Loading fact_taxi_trip to DW and RDS")
-    write_to_dw(df=df_fact_taxi_trip_sample, spark=spark, table_name=table_name, mode="append")
+    write_to_dw(df=df_fact_taxi_trip_sample, spark=spark, table_name=table_name)
     # write_fact_to_dw(df=df_fact_taxi_trip_sample, spark=spark, table_name=table_name)
     
     return df 
@@ -442,6 +440,7 @@ def delete_partition_rds(table_name: str, year: str, month: str):
 
 def write_to_dw(df: DataFrame, spark: SparkSession, table_name, partition_s3=4, partition_rds=1, mode="overwrite"):
     # df.coalesce(partition_s3).write.mode(mode).parquet(f"{DW_PATH}/{table_name}")
+    df = df.withColumn("load_datetime", from_utc_timestamp(current_timestamp(), "America/Sao_Paulo"))
     df.coalesce(partition_rds).write \
         .format("jdbc") \
         .option("url", RDS_JDBC_URL) \
@@ -514,58 +513,6 @@ def update_dim_scd2(df: DataFrame, table: str, chave_natural: str):
         .option("password", RDS_PASSWORD) \
         .save()
 
-### =======================================================
-### COM PARTICIONAMENTO
-# def write_fact_to_dw(df: DataFrame, spark: SparkSession, table_name: str, year: str, month: str, partition_s3=4, partition_rds=1):
-#     # ✅ 1. Sobrescreve apenas a partição no S3
-#     spark.conf.set("spark.sql.sources.partitionOverwriteMode", "dynamic")
-
-#     df.coalesce(partition_s3) \
-#         .write \
-#         .mode("overwrite") \
-#         .partitionBy("year", "month") \
-#         .parquet(f"{DW_PATH}/{table_name}")
-
-#     # ✅ 2. Deleta os dados da partição correspondente no MySQL RDS
-#     delete_partition_rds(table_name, year, month)
-
-#     # ✅ 3. Escreve em modo append no RDS
-#     df.coalesce(partition_rds).write \
-#         .format("jdbc") \
-#         .option("url", RDS_JDBC_URL) \
-#         .option("dbtable", table_name) \
-#         .option("user", RDS_USER) \
-#         .option("password", RDS_PASSWORD) \
-#         .option("driver", "com.mysql.cj.jdbc.Driver") \
-#         .mode("append") \
-#         .save()
-### =======================================================
-
-
-### =======================================================
-### SEM PARTICIONAMENTO. SUBINDO NO S3 TAMBÉM
-### =======================================================
-# def write_to_dw(df: DataFrame, spark: SparkSession, table_name, partition_s3=4, partition_rds=1):
-#     # Salvar no S3 particionado por year/month
-#     df.coalesce(partition_s3) \
-#         .write \
-#         .mode("overwrite") \
-#         .partitionBy("year", "month") \
-#         .parquet(f"{DW_PATH}/{table_name}")
-
-#     # Salvar no MySQL RDS (sem particionamento nativo, mas inclui year/month para simulação lógica)
-#     df.coalesce(partition_rds).write \
-#         .format("jdbc") \
-#         .option("url", RDS_JDBC_URL) \
-#         .option("dbtable", table_name) \
-#         .option("user", RDS_USER) \
-#         .option("password", RDS_PASSWORD) \
-#         .option("driver", "com.mysql.cj.jdbc.Driver") \
-#         .mode("overwrite") \
-#         .save()
-### =======================================================
-
-
 def main():
     spark = create_spark_session("NYC Taxi Load to DW and RDS")
     # 1. Carrega todos os DataFrames para os tipos de serviço
@@ -575,6 +522,7 @@ def main():
     for month in months:
         month_name = f"month={month}"
         print(f"Carregando o mês {month_name}")
+        # Remove mês da execução
         dfs = load_dataframes(spark, year = "year=2024", month = month_name)
     
         if not dfs:
